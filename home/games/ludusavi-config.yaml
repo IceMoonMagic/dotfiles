@@ -1,0 +1,77 @@
+---
+runtime:
+  threads: ~
+release:
+  check: true
+manifest:
+  enable: true
+language: en-US
+theme: dark
+roots:
+  - store: steam
+    path: /home/roboticat/.local/share/Steam
+  - store: steam
+    path: /opt/games/Steam
+  - store: heroic
+    path: /home/roboticat/.config/heroic
+  - store: heroic
+    path: /opt/games/Heroic
+  - store: heroic
+    path: /opt/.games/Heroic
+redirects: []
+backup:
+  path: /opt/saves
+  ignoredGames: []
+  filter:
+    excludeStoreScreenshots: false
+    cloud:
+      exclude: false
+      epic: false
+      gog: false
+      origin: false
+      steam: false
+      uplay: false
+    ignoredPaths: []
+    ignoredRegistry: []
+  toggledPaths: {}
+  toggledRegistry: {}
+  sort:
+    key: status
+    reversed: false
+  retention:
+    full: 1
+    differential: 6
+  format:
+    chosen: zip
+    zip:
+      compression: bzip2
+    compression:
+      deflate:
+        level: 6
+      bzip2:
+        level: 6
+      zstd:
+        level: 10
+  onlyConstructive: false
+restore:
+  path: /opt/saves
+  ignoredGames: []
+  toggledPaths: {}
+  toggledRegistry: {}
+  sort:
+    key: status
+    reversed: false
+  reverseRedirects: false
+scan:
+  showDeselectedGames: true
+  showUnchangedGames: true
+  showUnscannedGames: true
+cloud:
+  remote: ~
+  path: ludusavi-backup
+  synchronize: true
+apps:
+  rclone:
+    path: /app/bin/rclone
+    arguments: ""
+customGames: []

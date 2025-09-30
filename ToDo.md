@@ -1,0 +1,47 @@
+## Broken
+- [-] Fix Network Manager not starting
+- [X] Disable KDE Sceen Edges
+- [X] Fix Nova Chatmix Service
+- BTRFS space_cache v1 -> v2
+- Netbird + SSH
+- USB
+  - 1-8 Errors and Issues
+  - 1-12.3.3 config warnings
+- SDDM Wayland Warnings
+- SDDM Parameter "username" is not declared. Injection of parameters into signal handlers is deprecated
+- NixOS makes /home/roboticat before mounting /home
+
+
+## Missing Configuration
+- [ ] Unified Themeing
+  - [ ] KDE
+  - [ ] Terminal | set / use term colors
+    - [ ] Dir Colors
+    - [ ] Zsh Syntax Highlighting
+    - [ ] Oh My Posh
+- [ ] HeadsetControl unstable udev rules
+- [ ] Game Launchers
+  - [ ] Save Steam
+  - [ ] Heroic
+- [ ] Editors
+  - [ ] Codium
+    - [ ] Colors
+    - [X] Extensions
+    - [X] Overall Settings
+  - [ ] Jetbrains
+    - [ ] Colors
+    - [ ] Plugins
+    - [ ] Overall Settings
+  - [ ] Godot
+    - [ ] Colors
+    - [ ] Overall Settings
+  - [ ] Kate
+    - [ ] Colors (Unified Themeing / KDE)
+    - [ ] Indent Width
+- [ ] OpenRGB / Artemis
+- [ ] Firefox
+  - [ ] Base Extensions
+  - [ ] Base Settings
+- [ ] Seemless system vs hm
+  - [ ] Install packages @ system if nixos, else user
+  - [ ] HM Enable config but no install

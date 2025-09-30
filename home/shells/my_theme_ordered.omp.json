@@ -1,0 +1,271 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "palettes": {
+    "list": {
+      "frappe": {
+        "blue": "#8caaee",
+        "crust": "#232634",
+        "flamingo": "#eebebe",
+        "green": "#a6d189",
+        "lavender": "#babbf1",
+        "maroon": "#ea999c",
+        "mauve": "#ca9ee6",
+        "overlay": "#737994",
+        "peach": "#ef9f76",
+        "pink": "#f4b8e4",
+        "red": "#e78284",
+        "rosewater": "#f2d5cf",
+        "sapphire": "#85c1dc",
+        "sky": "#99d1db",
+        "subtext": "#a5adce",
+        "surface": "#414559",
+        "teal": "#81c8be",
+        "text": "#c6d0f5",
+        "yellow": "#e5c890"
+      },
+      "latte": {
+        "blue": "#1e66f5",
+        "crust": "#dce0e8",
+        "flamingo": "#dd7878",
+        "green": "#40a02b",
+        "lavender": "#7287fd",
+        "maroon": "#e64553",
+        "mauve": "#8839ef",
+        "overlay": "#9ca0b0",
+        "peach": "#fe640b",
+        "pink": "#ea76cb",
+        "red": "#d20f39",
+        "rosewater": "#dc8a78",
+        "sapphire": "#209fb5",
+        "sky": "#04a5e5",
+        "subtext": "#6c6f85",
+        "surface": "#ccd0da",
+        "teal": "#179299",
+        "text": "#4c4f69",
+        "yellow": "#df8e1d"
+      },
+      "macchiato": {
+        "blue": "#8aadf4",
+        "crust": "#181926",
+        "flamingo": "#f0c6c6",
+        "green": "#a6da95",
+        "lavender": "#b7bdf8",
+        "maroon": "#ee99a0",
+        "mauve": "#c6a0f6",
+        "overlay": "#6e738d",
+        "peach": "#f5a97f",
+        "pink": "#f5bde6",
+        "red": "#ed8796",
+        "rosewater": "#f4dbd6",
+        "sapphire": "#7dc4e4",
+        "sky": "#91d7e3",
+        "subtext": "#a5adcb",
+        "surface": "#363a4f",
+        "teal": "#8bd5ca",
+        "text": "#cad3f5",
+        "yellow": "#eed49f"
+      },
+      "mocha": {
+        "blue": "#89b4fa",
+        "crust": "#11111b",
+        "flamingo": "#f2cdcd",
+        "green": "#a6e3a1",
+        "lavender": "#b4befe",
+        "maroon": "#eba0ac",
+        "mauve": "#cba6f7",
+        "overlay": "#6c7086",
+        "peach": "#fab387",
+        "pink": "#f5c2e7",
+        "red": "#f38ba8",
+        "rosewater": "#f5e0dc",
+        "sapphire": "#74c7ec",
+        "sky": "#89dceb",
+        "subtext": "#a6adc8",
+        "surface": "#313244",
+        "teal": "#94e2d5",
+        "text": "#cdd6f4",
+        "yellow": "#f9e2af"
+      }
+    },
+    "template": "{{ if eq .Env.TermColorTheme \"latte\" }}latte{{ else }}{{ if eq .Env.TermColorTheme \"frappe\" }}frappe{{ else }}{{ if eq .Env.TermColorTheme \"macchiato\" }}macchiato{{ else }}mocha{{ end }}{{ end }}{{ end }}"
+  },
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "properties": {
+            "always_enabled": true,
+            "cache_duration": "none"
+          },
+          "leading_diamond": "\ue0b6",
+          "template": "{{ if eq .Code 0 }}\ueba4{{ else if eq .Meaning \"SIGINT\" }}\uebb5{{ else }}\uea87 {{ .Code }}{{ end }} ",
+          "foreground": "p:crust",
+          "background": "p:red",
+          "type": "exit",
+          "style": "diamond",
+          "background_templates": [
+            "{{ if eq .Code 0 }}p:green{{ else if eq .Meaning \"SIGINT\" }}p:subtext{{end}}"
+          ]
+        },
+        {
+          "properties": {
+            "cache_duration": "none",
+            "style": "roundrock",
+            "threshold": 0
+          },
+          "trailing_diamond": "\ue0b4",
+          "template": " \uf520 {{ .FormattedMs }}",
+          "foreground": "p:crust",
+          "background": "p:subtext",
+          "type": "executiontime",
+          "style": "diamond"
+        },
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "leading_diamond": "\ue0b6",
+          "trailing_diamond": "\ue0b4",
+          "template": "\ue843 {{ .Type }}",
+          "foreground": "p:crust",
+          "background": "p:blue",
+          "type": "nix-shell",
+          "style": "diamond"
+        },
+        {
+          "properties": {
+            "branch_icon": "\ue725 ",
+            "cache_duration": "none",
+            "fetch_upstream_icon": true,
+            "git_icon": "\ue702 "
+          },
+          "leading_diamond": "\ue0b6",
+          "trailing_diamond": "\ue0b4",
+          "template": "{{ .UpstreamIcon }}{{ .RepoName }} {{ .HEAD }}",
+          "foreground": "p:crust",
+          "background": "p:peach",
+          "type": "git",
+          "style": "diamond"
+        },
+        {
+          "properties": {
+            "cache_duration": "none",
+            "display_mode": "context"
+          },
+          "leading_diamond": "\ue0b6",
+          "trailing_diamond": "\ue0b4",
+          "foreground": "p:crust",
+          "background": "p:yellow",
+          "type": "python",
+          "style": "diamond",
+          "templates": [
+            "\ue73c ",
+            "{{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}",
+            "{{ if .Venv }} ({{ .Venv }}){{ end }}"
+          ]
+        },
+        {
+          "properties": {
+            "cache_duration": "none",
+            "fetch_package_manager": true,
+            "npm_icon": "\ue71e",
+            "yarn_icon": "\udb80\udd1b"
+          },
+          "leading_diamond": "\ue0b6",
+          "trailing_diamond": "\ue0b4",
+          "template": "{{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }}",
+          "foreground": "p:crust",
+          "background": "p:green",
+          "type": "node",
+          "style": "diamond"
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "\u256d\u2500",
+          "foreground": "p:rosewater",
+          "type": "text",
+          "style": "plain"
+        },
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "leading_diamond": "\ue0b6",
+          "template": "{{ .Icon }} ",
+          "foreground": "p:crust",
+          "powerline_symbol": "\ue0b4",
+          "background": "p:teal",
+          "type": "os",
+          "style": "diamond"
+        },
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "foreground": "p:crust",
+          "powerline_symbol": "\ue0b4",
+          "background": "p:teal",
+          "type": "session",
+          "style": "diamond",
+          "templates": [
+            "{{ if .SSHSession }}\udb82\udca9 {{ end }}",
+            "{{ if .Root }}\udb80\udc05 {{ end }}",
+            "{{ .UserName }}@{{ .HostName }}"
+          ]
+        },
+        {
+          "properties": {
+            "cache_duration": "none",
+            "folder_icon": " \ueaf7 ",
+            "home_icon": "\uf015 ",
+            "mapped_locations": {
+              "/mnt": "\uf0a0 ",
+              "/run/media/roboticat/": "\udb84\ude9e ",
+              "/tmp": "\uf43a ",
+              "~/Desktop": "\udb80\udf79 ",
+              "~/Documents": "\ueaf0 ",
+              "~/Downloads": "\udb80\uddda "
+            },
+            "mixed_threshold": 10,
+            "style": "agnoster"
+          },
+          "template": " {{ if not .Writable }}\udb83\udde4 {{ end }}{{ .Path }}",
+          "foreground": "p:crust",
+          "powerline_symbol": "\ue0b4",
+          "background": "p:mauve",
+          "type": "path",
+          "style": "powerline"
+        }
+      ],
+      "newline": true
+    },
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "\u2570\u2500❯",
+          "foreground": "p:rosewater",
+          "type": "text",
+          "style": "plain"
+        }
+      ],
+      "newline": true
+    }
+  ],
+  "version": 3,
+  "final_space": true
+}
