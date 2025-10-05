@@ -33,45 +33,34 @@
       plasma-manager,
       ...
     }@inputs:
+    let
+      system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
+      homeModules = [ plasma-manager.homeModules.plasma-manager ];
+      nixosModules = [
+        disko.nixosModules.disko
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
+        }
+        inputs.nova-chatmix.nixosModules.x86_64-linux.default
+      ];
+    in
     {
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
+      formatter.${system} = pkgs.nixfmt-tree;
       homeConfigurations = {
         roboticat = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          modules = [
-            plasma-manager.homeModules.plasma-manager
-            ./home/home.nix
-          ];
+          modules = [ ./home/home.nix ] ++ homeModules;
         };
       };
       nixosConfigurations = {
         pseudo-aurora = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./nixos/pseudo-aurora/configuration.nix
-            disko.nixosModules.disko
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              #environment.systemPackages = [ home-manager.packages.x86_64-linux.home-manager ];
-              home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
-            }
-            inputs.nova-chatmix.nixosModules.x86_64-linux.default
-          ];
+          modules = [ ./nixos/pseudo-aurora/configuration.nix ]++ nixosModules;
         };
         icemoon-y370 = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./nixos/y370/configuration.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              environment.systemPackages = [ home-manager.packages.x86_64-linux.home-manager ];
-            }
-            inputs.nova-chatmix.nixosModules.x86_64-linux.default
-          ];
+          modules = [ ./nixos/y370/configuration.nix ] ++ nixosModules;
         };
       };
     };
