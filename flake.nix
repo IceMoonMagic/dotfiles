@@ -48,9 +48,31 @@
           })
         ];
       };
-      homeModules = [ inputs.plasma-manager.homeModules.plasma-manager ];
+      registry = rec {
+        register = path: {
+          to = {
+            type = "path";
+            inherit path;
+          };
+        };
+        # Allow `nix {run,shell} 'unstable#someProgram'
+        # to match flake's nixpkgs/nixpkgs-unstable.
+        system = {
+          nix.registry.unstable = register inputs.nixpkgs-unstable;
+        };
+        # Ditto for 'nixpkgs#someProgram', not set by home-manager.
+        # "option 'unstable' does not exist" for NixOS if done together.
+        user = pkgs.lib.recursiveUpdate {
+          nix.registry.nixpkgs = register nixpkgs;
+        } system;
+      };
+      homeModules = [
+        registry.user
+        inputs.plasma-manager.homeModules.plasma-manager
+      ];
       nixosModules = [
         inputs.disko.nixosModules.disko
+        registry.system
         home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
