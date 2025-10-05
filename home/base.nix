@@ -16,7 +16,7 @@
   home.stateVersion = "25.05"; # Please read the comment before changing.
 
   # Allow unfree packages, only set if not using home-manager.useGlobalPkgs
-  nixpkgs.config = lib.mkIf (config.nix.package == null) { allowUnfree = true; };
+  # nixpkgs.config = lib.mkIf (config.nix.package == null) { allowUnfree = true; };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = lib.mkIf (config.nix.package == null) true;

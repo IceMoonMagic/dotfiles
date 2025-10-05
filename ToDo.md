@@ -19,10 +19,10 @@
     - [ ] Dir Colors
     - [ ] Zsh Syntax Highlighting
     - [ ] Oh My Posh
-- [ ] HeadsetControl unstable udev rules
+- [X] HeadsetControl unstable udev rules
 - [ ] Game Launchers
-  - [ ] Save Steam
-  - [ ] Heroic
+  - [ ] Steam Settings
+  - [ ] Heroic Settings
 - [ ] Editors
   - [ ] Codium
     - [ ] Colors
@@ -38,6 +38,9 @@
   - [ ] Kate
     - [ ] Colors (Unified Themeing / KDE)
     - [ ] Indent Width
+  - [ ] Zed
+    - [ ] Colors
+    - [ ] Overall Settings
 - [ ] OpenRGB / Artemis
 - [ ] Firefox
   - [ ] Base Extensions
