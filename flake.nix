@@ -29,9 +29,7 @@
     {
       self,
       nixpkgs,
-      disko,
       home-manager,
-      plasma-manager,
       ...
     }@inputs:
     let
@@ -39,26 +37,25 @@
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
-        overlays =
-          let
-            unstable = import inputs.nixpkgs-unstable { inherit system; };
-          in
-          [
-            (final: prev: {
-              headsetcontrol = unstable.headsetcontrol; # SteelSeries Nova 5X undev rules
-              heroic = unstable.heroic; # Games fail to launch
-              zed-editor = unstable.zed-editor; # Option to disable AI features
-            })
-          ];
+        overlays = [
+          (_: _: {
+            inherit (import inputs.nixpkgs-unstable { inherit system; })
+              headsetcontrol # SteelSeries Nova 5X undev rules
+              heroic # Games fail to launch
+              mission-center # GPU Graph
+              zed-editor # Option to disable AI features
+              ;
+          })
+        ];
       };
-      homeModules = [ plasma-manager.homeModules.plasma-manager ];
+      homeModules = [ inputs.plasma-manager.homeModules.plasma-manager ];
       nixosModules = [
-        disko.nixosModules.disko
+        inputs.disko.nixosModules.disko
         home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
+          home-manager.sharedModules = homeModules;
         }
         inputs.nova-chatmix.nixosModules.x86_64-linux.default
       ];
@@ -67,7 +64,7 @@
       formatter.${system} = pkgs.nixfmt-tree;
       homeConfigurations = {
         roboticat = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
+          inherit pkgs;
           modules = [ ./home/home.nix ] ++ homeModules;
         };
       };
