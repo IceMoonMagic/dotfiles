@@ -1,10 +1,12 @@
 { config, pkgs, ... }:
 
 {
-  # Bootloader.
-  boot.loader.timeout = 0;
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # Bootloader
+  boot.loader = pkgs.lib.mkDefault {
+    timeout = 0;
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
+  };
   #   boot.loader.grub.enable = true;
   #   boot.loader.grub.theme = pkgs.fetchzip {
   #     url = "https://github.com/AdisonCavani/distro-grub-themes/raw/master/themes/nixos.tar";
@@ -68,6 +70,8 @@
 
   # Allow unfree packages
   # nixpkgs.config.allowUnfree = true;
+
+  home-manager.backupFileExtension = "backup";
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

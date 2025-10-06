@@ -4,15 +4,15 @@
     disk = {
       main = {
         type = "disk";
-        device = "/dev/by-id/<>";
+        device = "/dev/disk/by-id/nvme-INTEL_SSDPEKKF256G7L_BTPY72150ZWQ256D_1";
         content = {
           type = "gpt";
           partitions = {
             ESP = {
               priority = 1;
               name = "ESP";
-              start = "1M";
-              end = "128M";
+              start = "1MiB";
+              end = "512MiB";
               type = "EF00";
               content = {
                 type = "filesystem";
@@ -21,9 +21,11 @@
                 mountOptions = [ "umask=0077" ];
               };
             };
+
             root =
               let
                 mountOptions = [
+                  "defaults"
                   "compress-force=zstd"
                   "lazytime"
                 ];
@@ -52,13 +54,21 @@
                     };
                     "@log" = {
                       inherit mountOptions;
-                      moutnpoint = "/var/log";
+                      mountpoint = "/var/log";
                     };
                   };
                   inherit mountOptions;
-                  mountpoint = "/mnt";
+                  mountpoint = "/mnt/nvme0n1p3";
                 };
               };
+            swap = {
+              size = "16G";
+              content = {
+                type = "swap";
+                resumeDevice = true;
+                discardPolicy = "both";
+              };
+            };
           };
         };
       };

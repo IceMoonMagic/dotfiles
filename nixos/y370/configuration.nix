@@ -2,8 +2,9 @@
 
 {
   imports = [
-    ../desktop.nix
     ./hardware-configuration.nix
+    ./disko.nix
+    ../desktop.nix
   ];
 
   networking.hostName = "icemoon-y370";
