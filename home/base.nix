@@ -19,11 +19,13 @@
   # nixpkgs.config = lib.mkIf (config.nix.package == null) { allowUnfree = true; };
 
   # Let Home Manager install and manage itself.
-  programs.home-manager.enable = lib.mkIf (config.nix.package == null) true;
+  programs.home-manager.enable = !config.submoduleSupport.enable;
 
   # Be aware of XDG Base Directories
   xdg.enable = true;
   home.preferXdgDirectories = true;
+  nix.settings.use-xdg-base-directories = true;
+  nix.package = lib.mkDefault pkgs.nix;
 
   imports = [
     ./shells
