@@ -15,7 +15,7 @@
     wine64
     protontricks
     protonup-qt
-    #     satisfactorymodmanager
+    satisfactorymodmanager
     r2modman
   ];
 }

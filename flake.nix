@@ -43,6 +43,7 @@
               headsetcontrol # SteelSeries Nova 5X undev rules
               heroic # Games fail to launch
               mission-center # GPU Graph
+              satisfactorymodmanager # Doesn't build
               zed-editor # Option to disable AI features
               ;
           })
