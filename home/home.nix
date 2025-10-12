@@ -5,9 +5,9 @@
     ./base.nix
     ./syncthing.nix
     ./desktops
+    ./development/editors
     ./games/mangohud.nix
     ./games/vesktop.nix
-    ./development/editors/vscode.nix
   ];
 
   home.username = "roboticat";
