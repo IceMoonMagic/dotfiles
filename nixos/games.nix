@@ -40,5 +40,6 @@
     satisfactorymodmanager
     r2modman
     dolphin-emu
+    ryubing
   ];
 }
