@@ -23,6 +23,10 @@
       #url = "path:/home/roboticat/Projects/nova-chatmix-linux";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sshd-rando = {
+      url = "path:./modules/sshd-rando";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs =
@@ -46,6 +50,7 @@
               satisfactorymodmanager # Doesn't build
               zed-editor # Option to disable AI features
               ;
+            inherit (inputs.sshd-rando.packages.${system}) sshd-rando;
           })
         ];
       };

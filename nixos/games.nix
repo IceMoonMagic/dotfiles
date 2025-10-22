@@ -8,6 +8,7 @@
       extraEnv.PROTON_ENABLE_WAYLAND = 1;
     };
   };
+  /*
   services.joycond.enable = true;
   services.joycond.package = pkgs.joycond.overrideAttrs (old: {
     # Without: I couldn't use the joycons' motion as non-root
@@ -28,8 +29,9 @@
   });
   # programs.joycond-cemuhook.enable = true;
   services.udev.extraRules = ''
-  SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTRS{idVendor}=="057e", ATTRS{idProduct}=="0337", MODE="0666"
+    SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTRS{idVendor}=="057e", ATTRS{idProduct}=="0337", MODE="0666"
   '';
+  */
   environment.systemPackages = with pkgs; [
     steamcmd
     heroic
@@ -41,5 +43,6 @@
     r2modman
     dolphin-emu
     ryubing
+    sshd-rando
   ];
 }
