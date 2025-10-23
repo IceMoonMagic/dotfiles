@@ -1,6 +1,5 @@
 {
   config,
-  pkgs,
   lib,
   ...
 }:
@@ -24,8 +23,18 @@
   # Be aware of XDG Base Directories
   xdg.enable = true;
   home.preferXdgDirectories = true;
-  nix.settings.use-xdg-base-directories = true;
-  nix.package = lib.mkDefault pkgs.nix;
+  # Link `~/.nix-profile` to `$XDG_STATE_HOME/nix/profile`.
+  # Home-manager sets home.profileDirectory to ~/.nix-profile
+  # unless it's a nixos submodule or `nix.enable` && `nix.settings.use-xdg-base-directories`.
+  # But if `nix.settings.use-xdg-base-directories = true;`
+  # then "ignoring the client-specified setting 'use-xdg-base-directories',
+  # because it is a restricted setting and you are not a trusted user".
+  # See https://github.com/nix-community/home-manager/issues/5805
+  home.file.".nix-profile" =
+    # Errors if `home.file.".nix-profile".source = ...;`
+    lib.mkIf (config.home.profileDirectory == config.home.homeDirectory + "/.nix-profile") {
+      source = (config.lib.file.mkOutOfStoreSymlink "${config.xdg.stateHome}/nix/profile");
+    };
 
   imports = [
     ./shells
