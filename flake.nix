@@ -87,6 +87,8 @@
         }
         inputs.nova-chatmix.nixosModules.x86_64-linux.default
       ];
+      # `nix build '.#nixosConfigurations.*.config.system.build.isoImage'
+      liveCDModule = [ (nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix") ];
     in
     {
       formatter.${system} = pkgs.nixfmt-tree;
@@ -104,6 +106,10 @@
         icemoon-y370 = nixpkgs.lib.nixosSystem {
           inherit pkgs;
           modules = [ ./nixos/y370/configuration.nix ] ++ nixosModules;
+        };
+        test-os = nixpkgs.lib.nixosSystem {
+          inherit pkgs;
+          modules = [ ./nixos/test-vm/configuration.nix ] ++ liveCDModule;
         };
       };
     };
