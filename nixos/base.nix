@@ -106,15 +106,15 @@
   #     bindsTo = [ "netbird.service" ];
   #     upheldBy = [ "netbird.service" ];
   #   };
-  #
-  #   # Enable the OpenSSH daemon.
-  #   services.openssh = {
-  #     enable = true;
-  #     # If false: change netbird section to service instead of socket
-  #     startWhenNeeded = true;
-  #     # Only listen on NetBird IP
-  #     listenAddresses = [ { addr = "100.79.185.174"; } ];
-  #   };
+
+  # Enable the OpenSSH daemon.
+  services.openssh = {
+    enable = false;
+    # If false: change netbird section to service instead of socket
+    startWhenNeeded = true;
+    # Only listen on NetBird IP
+    #listenAddresses = [ { addr = "100.79.185.174"; } ];
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

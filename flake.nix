@@ -111,6 +111,10 @@
           inherit pkgs;
           modules = [ ./nixos/test-vm/configuration.nix ] ++ liveCDModule;
         };
+        t54 = nixpkgs.lib.nixosSystem {
+          inherit pkgs;
+          modules = [ ./nixos/t54/configuration.nix ] ++ nixosModules;
+        };
       };
     };
 }
