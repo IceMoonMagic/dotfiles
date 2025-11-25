@@ -7,6 +7,7 @@
     ./desktops
     ./development/editors
     ./games/mangohud.nix
+    ./games/minecraft.nix
     ./games/vesktop.nix
   ];
 
