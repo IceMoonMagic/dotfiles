@@ -1,15 +1,14 @@
-{ lib }:
+{ ... }:
 
 {
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
     ../base.nix
+    ../ssh.nix
   ];
 
   networking.hostName = "t54";
-
-  services.openssh.enable = lib.mkForce true;
 
   virtualisation.docker.enable = true;
   virtualisation.docker.storageDriver = "btrfs";
