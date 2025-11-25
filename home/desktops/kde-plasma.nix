@@ -3,6 +3,31 @@
 {
   # https://github.com/nix-community/plasma-manager
   #programs.kate.enable = true;
+  xdg.dataFile."konsole.desktop" = {
+    # Make Dolphin's "Open Terminal Here" open a new konsole tab
+    source = pkgs.substitute {
+      src = "${pkgs.kdePackages.konsole}/share/applications/org.kde.konsole.desktop";
+      substitutions = [
+        "--replace-quiet"
+        "\nTryExec=konsole\nExec=konsole\n"
+        "\nExec=konsole --new-tab\n"
+      ];
+    };
+    target = "applications/org.kde.konsole.desktop";
+  };
+  xdg.dataFile."global.desktop" = {
+    # Dolphin tries to delete this file, but the values do seem to work
+    text = ''
+      [Settings]
+      HiddenFilesShown=true
+
+      [Dolphin]
+      ViewMode=1
+      SortFoldersFirst=true
+      SortHiddenLast=true
+    '';
+    target = "dolphin/view_properties/global/.directory";
+  };
   xdg.dataFile."dolphinui.rc" = {
     source = ./dolphinui.rc;
     target = "kxmlgui5/dolphin/dolphinui.rc";
@@ -45,11 +70,10 @@
       turnOffDisplay.idleTimeout = "never";
     };
     spectacle.shortcuts = {
-      recordWindow = [ ];
-      launch = [
+      captureRectangularRegion = [
         "Meta+Shift+S"
-        "Print"
       ];
+      recordWindow = [ ];
     };
     krunner.historyBehavior = "disabled";
     kwin = {

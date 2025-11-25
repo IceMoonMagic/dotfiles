@@ -29,6 +29,8 @@
   - `nixos-rebuild build-image --flake '<flake>#<host>' --image-variant iso-installer`
 
 ### In live session
+1. Generate hardware config
+  - `sudo nixos-generate-config --show-hardware-config > <path/to/host/hardware-configuartion.nix>`
 1. Login to Netbird
 1. Update Config:
   - Set SSH listen address to Netbird IP
@@ -51,4 +53,3 @@
 ## Home Manager
 ### Post Setup
 - Accounts - Sign in to desired accounts
-- KDE Kate - Hamburger Menu (Open Menu / F10) > Sort By > Hidden Files Last
