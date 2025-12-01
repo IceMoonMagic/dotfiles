@@ -15,19 +15,6 @@
     };
     target = "applications/org.kde.konsole.desktop";
   };
-  xdg.dataFile."global.desktop" = {
-    # Dolphin tries to delete this file, but the values do seem to work
-    text = ''
-      [Settings]
-      HiddenFilesShown=true
-
-      [Dolphin]
-      ViewMode=1
-      SortFoldersFirst=true
-      SortHiddenLast=true
-    '';
-    target = "dolphin/view_properties/global/.directory";
-  };
   xdg.dataFile."dolphinui.rc" = {
     source = ./dolphinui.rc;
     target = "kxmlgui5/dolphin/dolphinui.rc";
@@ -98,7 +85,7 @@
     configFile = {
       "baloofilerc"."Basic Settings"."Indexing-Enabled" = false;
       "dolphinrc"."General" = {
-        "BrowseThroughArchives" = true;
+        "BrowseThroughArchives" = false;
         "ConfirmClosingMultipleTabs" = false;
         "EditableUrl" = true;
         "FilterBar" = true;
