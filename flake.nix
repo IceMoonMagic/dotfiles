@@ -3,14 +3,14 @@
 
   inputs = {
     self.submodules = true;
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     disko = {
       url = "github:nix-community/disko/latest";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     plasma-manager = {
@@ -20,7 +20,7 @@
     };
     nova-chatmix = {
       url = "github:icemoonmagic/nova-chatmix-linux/Rework";
-      #url = "path:/home/roboticat/Projects/nova-chatmix-linux";
+      # url = "path:/home/roboticat/Projects/nova-chatmix-linux";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sshd-rando = {
@@ -31,7 +31,6 @@
 
   outputs =
     {
-      self,
       nixpkgs,
       home-manager,
       ...
@@ -43,13 +42,8 @@
         config.allowUnfree = true;
         overlays = [
           (_: _: {
-            inherit (import inputs.nixpkgs-unstable { inherit system; })
-              headsetcontrol # SteelSeries Nova 5X undev rules
-              heroic # Games fail to launch
-              mission-center # GPU Graph
-              satisfactorymodmanager # Doesn't build
-              zed-editor # Option to disable AI features
-              ;
+            # inherit (import inputs.nixpkgs-unstable { inherit system; })
+            #   ;
             inherit (inputs.sshd-rando.packages.${system}) sshd-rando;
           })
         ];

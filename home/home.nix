@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -16,9 +16,9 @@
 
   programs.git = {
     enable = true;
-    userName = "IceMoonMagic";
-    userEmail = "icemoonmagic@gmail.com";
-    extraConfig.init.defaultBranch = "main";
+    settings.user.name = "IceMoonMagic";
+    settings.user.email = "icemoonmagic@gmail.com";
+    settings.init.defaultBranch = "main";
   };
 
   # Packages where configs aren't important (or not saved yet...)

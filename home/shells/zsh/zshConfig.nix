@@ -4,11 +4,7 @@
   home.shell.enableZshIntegration = config.programs.zsh.enable;
   programs.zsh = {
     enable = true;
-
-    # Set dotDir to config.xdg.configHome/zsh, but relative to config.home.homeDirectory
-    dotDir =
-      builtins.replaceStrings [ (config.home.homeDirectory + "/") ] [ "" ]
-        "${config.xdg.configHome}/zsh";
+    dotDir = config.xdg.configHome + "/zsh";
 
     initContent = pkgs.lib.mkOrder 500 (
       builtins.concatStringsSep "\n" [
