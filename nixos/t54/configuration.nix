@@ -6,6 +6,7 @@
     ./disko.nix
     ../base.nix
     ../ssh.nix
+    ./minecraft-server.nix
   ];
 
   networking.hostName = "t54";
