@@ -1,10 +1,10 @@
-{ config, pkgs, ... }:
+{ ... }:
 
 {
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
-    ../desktop.nix
+    ../base.nix
   ];
 
   networking.hostName = "icemoon-y370";
@@ -16,4 +16,8 @@
       "wheel"
     ];
   };
+  home-manager.users.roboticat = ../../home/home.nix;
+
+  sshd = true;
+  sshKeys.roboticat = true;
 }

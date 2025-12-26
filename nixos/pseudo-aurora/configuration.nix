@@ -1,11 +1,10 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
-    ../desktop.nix
-    ../games.nix
+    ../base.nix
   ];
 
   networking.hostName = "pseudo-aurora";
