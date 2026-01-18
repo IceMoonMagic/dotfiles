@@ -50,6 +50,9 @@
   };
   home-manager.users.roboticat = ../../home/home.nix;
 
+  games.all = true;
+  games.autoGEProton.directory = "/mnt/sda/games/Wine/compatibilitytools.d/";
+
   #   virtualisation.docker.rootless.enable = true;
   #   virtualisation.docker.rootless.setSocketVariable = true;
   #   users.extraGroups.docker.members = [ "roboticat" ];
