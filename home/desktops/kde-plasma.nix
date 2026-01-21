@@ -103,7 +103,7 @@
       #"kcminputrc"."Mouse"."XLbInptPointerAcceleration" = 0;
       "kded5rc"."Module-browserintegrationreminder"."autoload" = false;
       "kded5rc"."Module-device_automounter"."autoload" = false;
-      "kdeglobals"."General"."fixed" = "NotoMono Nerd Font,10,-1,5,50,0,0,0,0,0";
+      "kdeglobals"."General"."fixed" = "NotoSansM Nerd Font,10,-1,5,50,0,0,0,0,0";
       "kdeglobals"."General"."toolBarFont" = "Noto Sans,10,-1,5,50,0,0,0,0,0";
       "kdeglobals"."KFileDialog Settings"."Show hidden files" = true;
       #"kdeglobals"."KFileDialog Settings"."Speedbar Width" = 105;

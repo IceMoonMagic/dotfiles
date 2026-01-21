@@ -78,7 +78,9 @@ in
         p7zip
         unrar
         #     unrar-free
-        nerd-fonts.noto
+        (nerd-fonts.noto.overrideAttrs {
+          preInstall = "find -not -name NotoSansMNerdFont-Regular.ttf -delete";
+        })
       ];
 
       # Enable Zsh
@@ -98,6 +100,7 @@ in
       # Enable the KDE Plasma Desktop Environment.
       services.displayManager.sddm.enable = true;
       services.desktopManager.plasma6.enable = true;
+      services.desktopManager.plasma6.notoPackage = pkgs.noto-fonts-lgc-plus;
       # Disable mouse acceleration
       services.libinput.mouse.accelProfile = "flat";
 
