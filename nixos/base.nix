@@ -20,7 +20,7 @@ in
       ];
     };
     headsets.enable = lib.mkEnableOption "Headset Control";
-    headsets.chatmix = config.services.nova-chatmix.enable;
+    headsets.chatmix = lib.mkEnableOption "Nova Chatmix";
   };
 
   imports = [
@@ -141,6 +141,7 @@ in
       services.udev.packages = [
         (lib.mkIf config.headsets.enable pkgs.headsetcontrol)
       ];
+      services.nova-chatmix.enable = lib.mkDefault config.headsets.chatmix;
     })
 
     {
