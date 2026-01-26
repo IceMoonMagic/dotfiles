@@ -1,8 +1,16 @@
 {
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+  inputs.sshd-rando = {
+    flake = false;
+    url = "github:mint-choc-chip-skyblade/sshd-rando?rev=5e54c83754112c28c69369183fba06cf3f9abe88";
+  };
+  inputs.pyqtdarktheme = {
+    flake = false;
+    url = "github:CovenEsme/PyQtDarkTheme";
+  };
 
   outputs =
-    { self, nixpkgs, ... }@inputs:
+    { nixpkgs, ... }@inputs:
     let
       forAllSystems = with nixpkgs.lib; genAttrs systems.flakeExposed;
       systemPkgs = forAllSystems (system: nixpkgs.legacyPackages.${system});
@@ -18,10 +26,7 @@
           sshd-rando = pkgs.python312Packages.buildPythonApplication rec {
             pname = "sshd-rando";
             version = "2.2";
-            src = builtins.fetchGit {
-              url = "https://github.com/mint-choc-chip-skyblade/sshd-rando";
-              rev = "5e54c83754112c28c69369183fba06cf3f9abe88";
-            };
+            src = inputs.sshd-rando;
             format = "none";
             nativeBuildInputs =
               with pkgs.python312Packages;
@@ -31,7 +36,10 @@
                 pyyaml
                 lz4
                 pyside6
-                #pyqtdarktheme
+                (pyqtdarktheme.overrideAttrs {
+                  version = "2.2.0";
+                  src = inputs.pyqtdarktheme;
+                })
                 typing-extensions
                 pyclip
                 black
@@ -60,7 +68,6 @@
               */
               ++ [
                 nlzss11
-                pyqtdarktheme
               ];
             dontUseCmakeConfigure = true;
 
@@ -97,24 +104,6 @@
             '';
             buildPhase = ''
               python3 setup.py bdist_wheel
-            '';
-          };
-          pyqtdarktheme = pkgs.python312Packages.buildPythonPackage rec {
-            pname = "PyQtDarkTheme";
-            version = "2.2.0";
-            pyproject = true;
-            nativeBuildInputs = with pkgs.python312Packages; [
-              poetry-core
-            ];
-            propagatedBuildInputs = with pkgs.python312Packages; [
-              darkdetect
-            ];
-            src = fetchGit {
-              url = "https://github.com/CovenEsme/PyQtDarkTheme";
-              rev = "ab4b136680ca6ab9098c548ee35c2a983fe869fc";
-            };
-            postPatch = ''
-              sed -i 's/^darkdetect = "^0\.7\.1"/darkdetect = "^0.8.0"/' pyproject.toml
             '';
           };
         }

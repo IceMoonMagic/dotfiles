@@ -2,11 +2,11 @@
   "nodes": {
     "nixpkgs": {
       "locked": {
-        "lastModified": 1760965567,
-        "narHash": "sha256-0JDOal5P7xzzAibvD0yTE3ptyvoVOAL0rcELmDdtSKg=",
+        "lastModified": 1768875095,
+        "narHash": "sha256-dYP3DjiL7oIiiq3H65tGIXXIT1Waiadmv93JS0sS+8A=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "cb82756ecc37fa623f8cf3e88854f9bf7f64af93",
+        "rev": "ed142ab1b3a092c4d149245d0c4126a5d7ea00b0",
         "type": "github"
       },
       "original": {
@@ -16,9 +16,44 @@
         "type": "github"
       }
     },
+    "pyqtdarktheme": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1700967414,
+        "narHash": "sha256-lCX8IhHboB3Y20d2LS0TJYXrxwb2n2RPrbsLBXfBakY=",
+        "owner": "CovenEsme",
+        "repo": "PyQtDarkTheme",
+        "rev": "3380fe5923daef0bfba09db2451266bbb4b331eb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "CovenEsme",
+        "repo": "PyQtDarkTheme",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "pyqtdarktheme": "pyqtdarktheme",
+        "sshd-rando": "sshd-rando"
+      }
+    },
+    "sshd-rando": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1757929977,
+        "narHash": "sha256-PnSUlqNA5yc7bOaRP2ZYk0Kecv3wh5zM9mBzWQ6h6fU=",
+        "owner": "mint-choc-chip-skyblade",
+        "repo": "sshd-rando",
+        "rev": "5e54c83754112c28c69369183fba06cf3f9abe88",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mint-choc-chip-skyblade",
+        "repo": "sshd-rando",
+        "rev": "5e54c83754112c28c69369183fba06cf3f9abe88",
+        "type": "github"
       }
     }
   },
