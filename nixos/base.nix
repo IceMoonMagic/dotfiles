@@ -1,7 +1,9 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
+  registry,
   ...
 }:
 let
@@ -24,6 +26,10 @@ in
   };
 
   imports = [
+    inputs.disko.nixosModules.disko
+    inputs.home-manager.nixosModules.home-manager
+    inputs.nova-chatmix.nixosModules.x86_64-linux.default
+    registry
     ./games.nix
     ./ssh.nix
     {
@@ -32,6 +38,9 @@ in
         "flakes"
       ];
       nix.settings.use-xdg-base-directories = true;
+
+      nixpkgs.system = config.nixpkgs.hostPlatform;
+      nixpkgs.config.allowUnfree = lib.mkDefault true;
 
       # Set your time zone.
       time.timeZone = "America/Chicago";
@@ -61,8 +70,6 @@ in
 
       # Enable networking
       networking.networkmanager.enable = true;
-
-      home-manager.backupFileExtension = "backup";
 
       # List packages installed in system profile. To search, run:
       # $ nix search wget
@@ -94,6 +101,13 @@ in
       #environment.pathsToLink = [ "/share/zsh" ];
 
       #   services.netbird.enable = true;
+
+      # Configure Home Manager
+      home-manager.backupFileExtension = "hm-bak";
+      home-manager.useGlobalPkgs = true;
+      home-manager.useUserPackages = true;
+      home-manager.extraSpecialArgs = { inherit inputs; };
+      home-manager.sharedModules = [ registry ];
     })
 
     (mkDesktop {

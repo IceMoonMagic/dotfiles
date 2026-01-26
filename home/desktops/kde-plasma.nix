@@ -1,6 +1,12 @@
-{ config, pkgs, ... }:
+{
+  config,
+  inputs,
+  pkgs,
+  ...
+}:
 
 {
+  imports = [ inputs.plasma-manager.homeModules.plasma-manager ];
   # https://github.com/nix-community/plasma-manager
   #programs.kate.enable = true;
   xdg.dataFile."konsole.desktop" = {

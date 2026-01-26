@@ -36,79 +36,48 @@
       ...
     }@inputs:
     let
-      system = "x86_64-linux";
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-        overlays = [
-          (_: _: {
-            # inherit (import inputs.nixpkgs-unstable { inherit system; })
-            #   ;
-            inherit (inputs.sshd-rando.packages.${system}) sshd-rando;
-          })
-        ];
-      };
-      registry = rec {
-        register = path: {
-          to = {
-            type = "path";
-            inherit path;
+      registry =
+        let
+          register = path: {
+            to.type = "path";
+            to.path = path;
           };
-        };
-        # Allow `nix {run,shell} 'unstable#someProgram'
-        # to match flake's nixpkgs/nixpkgs-unstable.
-        system = {
+        in
+        {
+          # Allow `nix {run,shell} {nixpkgs,unstable}#someProgram`
+          # to match this flake's nixpkgs nixpkgs / nixpkgs-unstable.
+          nix.registry.nixpkgs = register nixpkgs;
           nix.registry.unstable = register inputs.nixpkgs-unstable;
         };
-        # Ditto for 'nixpkgs#someProgram', not set by home-manager.
-        # "option 'unstable' does not exist" for NixOS if done together.
-        user = pkgs.lib.recursiveUpdate {
-          nix.registry.nixpkgs = register nixpkgs;
-        } system;
-      };
-      homeModules = [
-        registry.user
-        inputs.plasma-manager.homeModules.plasma-manager
-      ];
-      nixosModules = [
-        inputs.disko.nixosModules.disko
-        registry.system
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.sharedModules = homeModules;
-        }
-        inputs.nova-chatmix.nixosModules.x86_64-linux.default
-      ];
-      # `nix build '.#nixosConfigurations.*.config.system.build.isoImage'
-      liveCDModule = [ (nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix") ];
+      mkHomeManager =
+        modules:
+        home-manager.lib.homeManagerConfiguration {
+          inherit modules;
+          specialArgs = { inherit inputs registry; };
+        };
+      mkNixosSystem =
+        modules:
+        nixpkgs.lib.nixosSystem {
+          inherit modules;
+          specialArgs = { inherit inputs registry; };
+        };
     in
     {
-      formatter.${system} = pkgs.nixfmt-tree;
+      formatter = nixpkgs.lib.genAttrs [
+        "x86_64-linux"
+        # "aarch64-linux"
+        # "x86_64-darwin"
+        # "aarch64-darwin"
+      ] (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
+
       homeConfigurations = {
-        roboticat = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [ ./home/home.nix ] ++ homeModules;
-        };
+        roboticat = mkHomeManager [ ./home/home.nix ];
       };
+
       nixosConfigurations = {
-        pseudo-aurora = nixpkgs.lib.nixosSystem {
-          inherit pkgs;
-          modules = [ ./nixos/pseudo-aurora/configuration.nix ] ++ nixosModules;
-        };
-        icemoon-y370 = nixpkgs.lib.nixosSystem {
-          inherit pkgs;
-          modules = [ ./nixos/y370/configuration.nix ] ++ nixosModules;
-        };
-        test-os = nixpkgs.lib.nixosSystem {
-          inherit pkgs;
-          modules = [ ./nixos/test-vm/configuration.nix ] ++ liveCDModule;
-        };
-        t54 = nixpkgs.lib.nixosSystem {
-          inherit pkgs;
-          modules = [ ./nixos/t54/configuration.nix ] ++ nixosModules;
-        };
+        pseudo-aurora = mkNixosSystem [ ./nixos/pseudo-aurora/configuration.nix ];
+        icemoon-y370 = mkNixosSystem [ ./nixos/y370/configuration.nix ];
+        t54 = mkNixosSystem [ ./nixos/t54/configuration.nix ];
       };
     };
 }
