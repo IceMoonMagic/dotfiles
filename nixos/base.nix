@@ -28,7 +28,7 @@ in
   imports = [
     inputs.disko.nixosModules.disko
     inputs.home-manager.nixosModules.home-manager
-    inputs.nova-chatmix.nixosModules.x86_64-linux.default
+    inputs.nova-chatmix.nixosModules.nova-chatmix
     registry
     ./games.nix
     ./ssh.nix

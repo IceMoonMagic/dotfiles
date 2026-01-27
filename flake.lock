@@ -81,11 +81,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1764571176,
-        "narHash": "sha256-Hl/ALYF0Wcl5LHWwTpoAQd8ijVJcw2WeaRWgkxMDlu8=",
+        "lastModified": 1769491554,
+        "narHash": "sha256-KiXnk4IoHtjGNoIk+sF441XeAF88jZslId0Na9YEe9k=",
         "owner": "icemoonmagic",
         "repo": "nova-chatmix-linux",
-        "rev": "0eeb570af9c882c55bed3b85269a39249cf676e5",
+        "rev": "c0ef9b58fa48467103c55e72f7fe120daef41c81",
         "type": "github"
       },
       "original": {
