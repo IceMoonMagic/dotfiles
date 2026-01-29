@@ -1,0 +1,238 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/refs/tags/v26.23.6/themes/schema.json
+# Tip to self: Update tag in schema url to `oh-my-posh --version`
+version: 4
+palettes:
+  list:
+    frappe:
+      blue: "#8caaee"
+      crust: "#232634"
+      flamingo: "#eebebe"
+      green: "#a6d189"
+      lavender: "#babbf1"
+      maroon: "#ea999c"
+      mauve: "#ca9ee6"
+      overlay: "#737994"
+      peach: "#ef9f76"
+      pink: "#f4b8e4"
+      red: "#e78284"
+      rosewater: "#f2d5cf"
+      sapphire: "#85c1dc"
+      sky: "#99d1db"
+      subtext: "#a5adce"
+      surface: "#414559"
+      teal: "#81c8be"
+      text: "#c6d0f5"
+      yellow: "#e5c890"
+    latte:
+      blue: "#1e66f5"
+      crust: "#dce0e8"
+      flamingo: "#dd7878"
+      green: "#40a02b"
+      lavender: "#7287fd"
+      maroon: "#e64553"
+      mauve: "#8839ef"
+      overlay: "#9ca0b0"
+      peach: "#fe640b"
+      pink: "#ea76cb"
+      red: "#d20f39"
+      rosewater: "#dc8a78"
+      sapphire: "#209fb5"
+      sky: "#04a5e5"
+      subtext: "#6c6f85"
+      surface: "#ccd0da"
+      teal: "#179299"
+      text: "#4c4f69"
+      yellow: "#df8e1d"
+    macchiato:
+      blue: "#8aadf4"
+      crust: "#181926"
+      flamingo: "#f0c6c6"
+      green: "#a6da95"
+      lavender: "#b7bdf8"
+      maroon: "#ee99a0"
+      mauve: "#c6a0f6"
+      overlay: "#6e738d"
+      peach: "#f5a97f"
+      pink: "#f5bde6"
+      red: "#ed8796"
+      rosewater: "#f4dbd6"
+      sapphire: "#7dc4e4"
+      sky: "#91d7e3"
+      subtext: "#a5adcb"
+      surface: "#363a4f"
+      teal: "#8bd5ca"
+      text: "#cad3f5"
+      yellow: "#eed49f"
+    mocha:
+      blue: "#89b4fa"
+      crust: "#11111b"
+      flamingo: "#f2cdcd"
+      green: "#a6e3a1"
+      lavender: "#b4befe"
+      maroon: "#eba0ac"
+      mauve: "#cba6f7"
+      overlay: "#6c7086"
+      peach: "#fab387"
+      pink: "#f5c2e7"
+      red: "#f38ba8"
+      rosewater: "#f5e0dc"
+      sapphire: "#74c7ec"
+      sky: "#89dceb"
+      subtext: "#a6adc8"
+      surface: "#313244"
+      teal: "#94e2d5"
+      text: "#cdd6f4"
+      yellow: "#f9e2af"
+  template: >-
+    {{ if eq .Env.TermColorTheme "latte" }}latte{{
+    else if eq .Env.TermColorTheme "frappe" }}frappe{{
+    else if eq .Env.TermColorTheme "macchiato" }}macchiato{{
+    else }}mocha{{ end }}
+var:
+  SegOpen: &SegOpen "\ue0b6" # nf-ple-left_half_circle_thick
+  SegMid: &SegMid "\ue0b4" # nf-ple-right_half_circle_thick
+  SegClose: &SegClose "\ue0b4" # nf-ple-right_half_circle_thick
+  IconSuccess: &IconSuccess "\ueba4" # nf-cod-pass
+  IconInterrupt: &IconInterrupt "\uebb5" # nf-cod-circle_large
+  IconError: &IconError "\uea87" # nf-cod-error
+  IconStopwatch: &IconStopwatch "\uf520" # nf-oct-stopwatch
+  IconFlake: &IconFlake "\ue843" # nf-dev-nixos
+  IconGit: &IconGit "\ue702" # nf-dev-git
+  IconGitBranch: &IconGitBranch "\ue725 " # nf-dev-git_branch
+  IconPython: &IconPython "\ue73c " # nf-dev-python
+  IconNPM: &IconNPM "\ue71e " # nf-dev-npm
+  IconYarn: &IconYarn "\ue8ec " # nf-dev-yarn
+  IconSSH: &IconSSH "\U000f08a9 " # nf-md-console_network
+  IconRoot: &IconRoot "\U000f0005 " # nf-md-account_alert
+  IconFolder: &IconFolder " \ueaf7 " # nf-cod-folder_opened
+  IconHome: &IconHome "\uf015 " # nf-fa-home
+  IconMnt: &IconMnt "\uf0a0 " # nf-fa-hard_drive
+  IconFlashDrive: &IconFlashDrive "\U000f129e " # nf-md-usb_flash_drive
+  IconTmp: &IconTmp "\uf43a " # nf-oct-clock
+  IconDesktop: &IconDesktop "\U000f0379 " # nf-md-monitor
+  IconDocuments: &IconDocuments "\ueaf0 " # nf-cod-files
+  IconDownloads: &IconDownloads "\U000f01da " # nf-md-download
+  IconNoWrite: &IconNoWrite "\U000f0de4 " # nf-md-pen_off
+  PromptTop: ╭─
+  PromptBottom: ╰─❯
+blocks:
+  - type: prompt
+    alignment: left
+    segments:
+      - type: status
+        template: >-
+          {{ if eq .Code 0 }}{{ .Var.IconSuccess }}
+          {{ else if eq .Meaning "SIGINT" }}{{ .Var.IconInterrupt }}
+          {{ else }}{{ .Var.IconError }} {{.Code }}
+          {{ end }}
+        foreground: "p:crust"
+        background: "p:red"
+        background_templates:
+          - >-
+            {{ if eq .Code 0 }}p:green{{else if eq .Meaning "SIGINT"}}p:subtext{{end}}
+        style: diamond
+        leading_diamond: *SegOpen
+        properties:
+          always_enabled: true
+      - type: executiontime
+        template: " {{ .Var.IconStopwatch }} {{ .FormattedMs }}"
+        foreground: "p:crust"
+        background: "p:subtext"
+        style: diamond
+        trailing_diamond: *SegClose
+        properties:
+          style: roundrock
+          threshold: 0
+      - type: nix-shell
+        template: "{{ .Var.IconFlake}} {{ .Type }}"
+        foreground: "p:crust"
+        background: "p:blue"
+        style: diamond
+        leading_diamond: *SegOpen
+        trailing_diamond: *SegClose
+      - type: git
+        template: "{{ .UpstreamIcon }} {{ .RepoName }} {{ .HEAD }}"
+        foreground: "p:crust"
+        background: "p:peach"
+        leading_diamond: *SegOpen
+        trailing_diamond: *SegClose
+        style: diamond
+        properties:
+          branch_icon: *IconGitBranch
+          fetch_upstream_icon: true
+          git_icon: *IconGit
+      - type: python
+        templates:
+          - "{{ .Var.IconPython }}"
+          - "{{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}"
+          - "{{ if .Venv }} ({{ .Venv }}){{ end }}"
+        foreground: "p:crust"
+        background: "p:yellow"
+        style: diamond
+        leading_diamond: *SegOpen
+        trailing_diamond: *SegClose
+        properties:
+          display_mode: context
+      - type: node
+        template: >-
+          {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }}{{ end }}{{ .PackageManagerName }}
+        foreground: "p:crust"
+        background: "p:green"
+        style: diamond
+        leading_diamond: *SegOpen
+        trailing_diamond: *SegClose
+        properties:
+          fetch_package_manager: true
+          npm_icon: *IconNPM
+          yarn_icon: *IconYarn
+  - type: prompt
+    alignment: left
+    segments:
+      - type: text
+        template: "{{ .Var.PromptTop }}"
+        foreground: "p:rosewater"
+        style: plain
+      - type: os
+        template: "{{ .Icon }} "
+        foreground: "p:crust"
+        background: "p:teal"
+        style: diamond
+        leading_diamond: *SegOpen
+        powerline_symbol: *SegMid
+      - type: session
+        templates:
+          - "{{ if .SSHSession }}{{ .Var.IconSSH }}{{ end }}"
+          - "{{ if .Root }}{{ .Var.IconRoot }}{{ end }}"
+          - "{{ .UserName }}@{{ .HostName }}"
+        foreground: "p:crust"
+        background: "p:teal"
+        style: diamond
+        powerline_symbol: *SegMid
+      - type: path
+        template: " {{ if not .Writable }}{{ .Var.IconNoWrite }}{{ end }}{{ .Path }}"
+        foreground: "p:crust"
+        background: "p:mauve"
+        style: powerline
+        powerline_symbol: *SegMid
+        properties:
+          folder_icon: *IconFolder
+          home_icon: *IconHome
+          mapped_locations:
+            /mnt: *IconMnt
+            /run/media/roboticat/: *IconFlashDrive
+            /tmp: *IconTmp
+            ~/Desktop: *IconDesktop
+            ~/Documents: *IconDocuments
+            ~/Downloads: *IconDownloads
+          mixed_threshold: 10
+          style: agnoster
+    newline: true
+  - type: prompt
+    alignment: left
+    segments:
+      - type: text
+        template: "{{ .Var.PromptBottom }}"
+        foreground: "p:rosewater"
+        style: plain
+    newline: true
+final_space: true
