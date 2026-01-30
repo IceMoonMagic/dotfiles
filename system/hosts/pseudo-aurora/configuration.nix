@@ -53,6 +53,7 @@
   games.autoGEProton.directory = "/mnt/sda/games/Wine/compatibilitytools.d/";
   headsets.enable = true;
   headsets.chatmix = true;
+  services.sshd.enable = true;
 
   #   virtualisation.docker.rootless.enable = true;
   #   virtualisation.docker.rootless.setSocketVariable = true;

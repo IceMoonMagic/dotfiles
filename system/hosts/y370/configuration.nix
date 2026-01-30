@@ -17,6 +17,5 @@
   };
   home-manager.users.roboticat = ../../../home/home.nix;
 
-  sshd = true;
-  sshKeys.roboticat = true;
+  services.sshd.enable = true;
 }
