@@ -12,7 +12,7 @@
     };
     vencord.settings = {
       autoUpdate = true;
-      autoUpdateNotification = true;
+      autoUpdateNotification = false;
       plugins = {
         ImageZoom = {
           enabled = true;

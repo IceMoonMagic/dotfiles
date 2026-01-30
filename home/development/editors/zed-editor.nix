@@ -12,7 +12,7 @@
     ];
     extraPackages = with pkgs; [
       nil
-      nixd
+      # nixd
     ];
     userSettings = {
       autosave = "on_focus_change";
@@ -26,6 +26,10 @@
       collaboration_panel.button = false;
       search.button = false;
       title_bar.show_sign_in = false;
+      languages.nix.language_servers = [
+        "nil"
+        # "nixd"
+      ];
     };
     userKeymaps = [
       {
