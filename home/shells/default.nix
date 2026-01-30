@@ -16,15 +16,14 @@
 
   programs.oh-my-posh = {
     enable = true;
-    settings = builtins.fromJSON (
-      builtins.unsafeDiscardStringContext (builtins.readFile ./my_theme_ordered.omp.json)
-    );
+    configFile = ./my_theme_ordered.omp.yaml;
   };
 
   programs.dircolors.enable = true;
   programs.less.enable = true;
 
   home.sessionVariables = {
+    OMP_PALETTE = "mocha";
     EDITOR = "nano";
     GTK_USE_PORTAL = 1;
     LESS = "RSMC"; # Raw Colors and OSC 8, chop lines, verbose prompt, clear screen

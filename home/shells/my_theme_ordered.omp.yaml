@@ -1,5 +1,8 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/refs/tags/v26.23.6/themes/schema.json
 # Tip to self: Update tag in schema url to `oh-my-posh --version`
+# ToDo: Find simple way to sub variables in case of 1) ColorForeground: true; 2) ASCII Only
+# Would prefer single file, but OMP has an extends keyword usable in a separate config
+# watch https://github.com/JanDeDobbeleer/oh-my-posh/issues/7243 | templating on segment options
 version: 4
 palettes:
   list:
@@ -83,12 +86,24 @@ palettes:
       teal: "#94e2d5"
       text: "#cdd6f4"
       yellow: "#f9e2af"
+    native:
+      crust: black
+      rosewater: default
+      red: red
+      peach: yellow
+      green: green
+      teal: cyan
+      blue: blue
+      mauve: magenta
+      subtext: white
   template: >-
-    {{ if eq .Env.TermColorTheme "latte" }}latte{{
-    else if eq .Env.TermColorTheme "frappe" }}frappe{{
-    else if eq .Env.TermColorTheme "macchiato" }}macchiato{{
-    else }}mocha{{ end }}
+    {{ if eq .Env.OMP_PALETTE "latte" }}latte{{
+    else if eq .Env.OMP_PALETTE "frappe" }}frappe{{
+    else if eq .Env.OMP_PALETTE "macchiato" }}macchiato{{
+    else if eq .Env.OMP_PALETTE "mocha" }}mocha{{
+    else }}native{{ end }}
 var:
+  ColorForeground: false
   SegOpen: &SegOpen "\ue0b6" # nf-ple-left_half_circle_thick
   SegMid: &SegMid "\ue0b4" # nf-ple-right_half_circle_thick
   SegClose: &SegClose "\ue0b4" # nf-ple-right_half_circle_thick
@@ -96,12 +111,14 @@ var:
   IconInterrupt: &IconInterrupt "\uebb5" # nf-cod-circle_large
   IconError: &IconError "\uea87" # nf-cod-error
   IconStopwatch: &IconStopwatch "\uf520" # nf-oct-stopwatch
-  IconFlake: &IconFlake "\ue843" # nf-dev-nixos
+  Battery: &Battery "\U000f007e" # nf-md-battery_50
+  BatteryPlug: &BatteryPlug "\U000f089d" # nf-md-battery_charging_50
+  BatteryFull: &BatteryFull "\U000f0079" # nf-md-battery
+  BatteryPlugFull: &BatteryPlugFull "\U000f0085" # nf-md-battery_charging_100
   IconGit: &IconGit "\ue702" # nf-dev-git
   IconGitBranch: &IconGitBranch "\ue725 " # nf-dev-git_branch
-  IconPython: &IconPython "\ue73c " # nf-dev-python
-  IconNPM: &IconNPM "\ue71e " # nf-dev-npm
-  IconYarn: &IconYarn "\ue8ec " # nf-dev-yarn
+  IconGitStatus: &IconGitStatus "\ueb43" # nf-cod-request_changes
+  IconGitStash: &IconGitStash "\ued76" # nf-fa-boxes_stacked
   IconSSH: &IconSSH "\U000f08a9 " # nf-md-console_network
   IconRoot: &IconRoot "\U000f0005 " # nf-md-account_alert
   IconFolder: &IconFolder " \ueaf7 " # nf-cod-folder_opened
@@ -123,68 +140,60 @@ blocks:
         template: >-
           {{ if eq .Code 0 }}{{ .Var.IconSuccess }}
           {{ else if eq .Meaning "SIGINT" }}{{ .Var.IconInterrupt }}
-          {{ else }}{{ .Var.IconError }} {{.Code }}
+          {{ else }}{{ .Var.IconError }} {{ .Code }}
           {{ end }}
-        foreground: "p:crust"
-        background: "p:red"
+        foreground_templates:
+          - "{{ if not .Var.ColorForeground }}p:crust{{ end }}"
+          - '{{ if .Var.ColorForeground }}{{ if eq .Code 0 }}p:green{{ else if eq .Meaning "SIGINT" }}p:subtext{{ else }}p:red{{ end }}{{ end }}'
         background_templates:
-          - >-
-            {{ if eq .Code 0 }}p:green{{else if eq .Meaning "SIGINT"}}p:subtext{{end}}
+          - "{{ if .Var.ColorForeground }}p:crust{{ end }}"
+          - '{{ if not .Var.ColorForeground }}{{ if eq .Code 0 }}p:green{{ else if eq .Meaning "SIGINT" }}p:subtext{{ else }}p:red{{ end }}{{ end }}'
         style: diamond
         leading_diamond: *SegOpen
         properties:
           always_enabled: true
       - type: executiontime
         template: " {{ .Var.IconStopwatch }} {{ .FormattedMs }}"
-        foreground: "p:crust"
-        background: "p:subtext"
+        foreground_templates:
+          - "{{ if .Var.ColorForeground }}p:subtext{{ else }}p:crust{{ end }}"
+        background_templates:
+          - "{{ if not .Var.ColorForeground }}p:subtext{{ else }}p:crust{{ end }}"
         style: diamond
         trailing_diamond: *SegClose
         properties:
           style: roundrock
           threshold: 0
-      - type: nix-shell
-        template: "{{ .Var.IconFlake}} {{ .Type }}"
-        foreground: "p:crust"
-        background: "p:blue"
+      - type: battery
+        template: "{{ .Icon }} {{ .Percentage }}%"
+        foreground_templates:
+          - "{{ if .Var.ColorForeground }}p:blue{{ else }}p:crust{{ end }}"
+        background_templates:
+          - "{{ if not .Var.ColorForeground }}p:blue{{ else }}p:crust{{ end }}"
         style: diamond
         leading_diamond: *SegOpen
         trailing_diamond: *SegClose
+        properties:
+          charging_icon: *BatteryPlug
+          discharging_icon: *Battery
+          charged_icon: *BatteryPlugFull
+          not_charging_icon: *BatteryFull
       - type: git
-        template: "{{ .UpstreamIcon }} {{ .RepoName }} {{ .HEAD }}"
-        foreground: "p:crust"
-        background: "p:peach"
+        templates:
+          - "{{ .UpstreamIcon }} {{ .RepoName }} {{ .HEAD }}"
+          - "{{ if .Working.Changed }} {{ .Var.IconGitStatus }} {{ .Working.String }}{{ end }}"
+          - "{{ if .StashCount }} {{ .Var.IconGitStash }} {{ .StashCount }}{{ end }}"
+        foreground_templates:
+          - "{{ if .Var.ColorForeground }}p:peach{{ else }}p:crust{{ end }}"
+        background_templates:
+          - "{{ if not .Var.ColorForeground }}p:peach{{ else }}p:crust{{ end }}"
         leading_diamond: *SegOpen
         trailing_diamond: *SegClose
         style: diamond
         properties:
           branch_icon: *IconGitBranch
+          fetch_status: true
           fetch_upstream_icon: true
           git_icon: *IconGit
-      - type: python
-        templates:
-          - "{{ .Var.IconPython }}"
-          - "{{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}"
-          - "{{ if .Venv }} ({{ .Venv }}){{ end }}"
-        foreground: "p:crust"
-        background: "p:yellow"
-        style: diamond
-        leading_diamond: *SegOpen
-        trailing_diamond: *SegClose
-        properties:
-          display_mode: context
-      - type: node
-        template: >-
-          {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }}{{ end }}{{ .PackageManagerName }}
-        foreground: "p:crust"
-        background: "p:green"
-        style: diamond
-        leading_diamond: *SegOpen
-        trailing_diamond: *SegClose
-        properties:
-          fetch_package_manager: true
-          npm_icon: *IconNPM
-          yarn_icon: *IconYarn
   - type: prompt
     alignment: left
     segments:
@@ -194,8 +203,10 @@ blocks:
         style: plain
       - type: os
         template: "{{ .Icon }} "
-        foreground: "p:crust"
-        background: "p:teal"
+        foreground_templates:
+          - "{{ if .Var.ColorForeground }}p:teal{{ else }}p:crust{{ end }}"
+        background_templates:
+          - "{{ if not .Var.ColorForeground }}p:teal{{ else }}p:crust{{ end }}"
         style: diamond
         leading_diamond: *SegOpen
         powerline_symbol: *SegMid
@@ -204,14 +215,18 @@ blocks:
           - "{{ if .SSHSession }}{{ .Var.IconSSH }}{{ end }}"
           - "{{ if .Root }}{{ .Var.IconRoot }}{{ end }}"
           - "{{ .UserName }}@{{ .HostName }}"
-        foreground: "p:crust"
-        background: "p:teal"
+        foreground_templates:
+          - "{{ if .Var.ColorForeground }}p:teal{{ else }}p:crust{{ end }}"
+        background_templates:
+          - "{{ if not .Var.ColorForeground }}p:teal{{ else }}p:crust{{ end }}"
         style: diamond
         powerline_symbol: *SegMid
       - type: path
         template: " {{ if not .Writable }}{{ .Var.IconNoWrite }}{{ end }}{{ .Path }}"
-        foreground: "p:crust"
-        background: "p:mauve"
+        foreground_templates:
+          - "{{ if .Var.ColorForeground }}p:mauve{{ else }}p:crust{{ end }}"
+        background_templates:
+          - "{{ if not .Var.ColorForeground }}p:mauve{{ else }}p:crust{{ end }}"
         style: powerline
         powerline_symbol: *SegMid
         properties:
