@@ -214,6 +214,7 @@ blocks:
         templates:
           - "{{ if .SSHSession }}{{ .Var.IconSSH }}{{ end }}"
           - "{{ if .Root }}{{ .Var.IconRoot }}{{ end }}"
+          - "{{ if gt .SHLVL 1}}{{ .SHLVL }} {{ end }}"
           - "{{ .UserName }}@{{ .HostName }}"
         foreground_templates:
           - "{{ if .Var.ColorForeground }}p:teal{{ else }}p:crust{{ end }}"
