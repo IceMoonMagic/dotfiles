@@ -148,7 +148,7 @@
     "sshd-rando": {
       "inputs": {
         "nixpkgs": [
-          "nixpkgs-unstable"
+          "nixpkgs"
         ],
         "pyqtdarktheme": "pyqtdarktheme",
         "sshd-rando": "sshd-rando_2"

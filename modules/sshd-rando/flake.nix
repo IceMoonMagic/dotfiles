@@ -12,7 +12,13 @@
   outputs =
     { nixpkgs, ... }@inputs:
     let
-      forAllSystems = with nixpkgs.lib; genAttrs systems.flakeExposed;
+      forAllSystems = nixpkgs.lib.genAttrs [
+        "x86_64-linux"
+        "aarch64-linux"
+        # Darwins' python3.12-pyclip-0.7.0 is marked as broken
+        # "x86_64-darwin"
+        # "aarch64-darwin"
+      ];
       systemPkgs = forAllSystems (system: nixpkgs.legacyPackages.${system});
     in
     {

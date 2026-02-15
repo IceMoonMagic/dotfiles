@@ -25,7 +25,7 @@
     };
     sshd-rando = {
       url = "path:./modules/sshd-rando";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
