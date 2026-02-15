@@ -75,9 +75,21 @@
       };
 
       nixosConfigurations = {
-        pseudo-aurora = mkNixosSystem [ ./nixos/pseudo-aurora/configuration.nix ];
-        icemoon-y370 = mkNixosSystem [ ./nixos/y370/configuration.nix ];
-        t54 = mkNixosSystem [ ./nixos/t54/configuration.nix ];
+        pseudo-aurora = mkNixosSystem [
+          ./system/hosts/pseudo-aurora/configuration.nix
+          ./system
+          ./system/modules/defaults/desktops
+        ];
+        icemoon-y370 = mkNixosSystem [
+          ./system/hosts/y370/configuration.nix
+          ./system
+          ./system/modules/defaults/desktops
+        ];
+        t54 = mkNixosSystem [
+          ./system/hosts/t54/configuration.nix
+          ./system
+          ./system/modules/defaults/desktops
+        ];
       };
     };
 }

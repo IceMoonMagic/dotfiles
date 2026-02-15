@@ -17,10 +17,10 @@
     # Enable the OpenSSH daemon.
     services.openssh = {
       # enable = lib.mkDefault true;
-      startWhenNeeded = true;
-      authorizedKeysInHomedir = false;
-      settings.PasswordAuthentication = false;
-      settings.PermitRootLogin = "no";
+      startWhenNeeded = lib.mkDefault true;
+      authorizedKeysInHomedir = lib.mkDefault false;
+      settings.PasswordAuthentication = lib.mkDefault false;
+      settings.PermitRootLogin = lib.mkDefault "no";
     };
 
     users.users.roboticat.openssh.authorizedKeys.keys =

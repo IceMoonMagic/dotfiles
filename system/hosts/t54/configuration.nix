@@ -4,7 +4,6 @@
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
-    ../base.nix
     ./minecraft-server.nix
   ];
 
@@ -22,7 +21,7 @@
       "wheel"
     ];
   };
-  home-manager.users.roboticat = ../../home/home.nix;
+  home-manager.users.roboticat = ../../../home/home.nix;
 
   hardware.graphics = {
     enable = true;

@@ -4,7 +4,6 @@
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
-    ../base.nix
   ];
 
   networking.hostName = "pseudo-aurora";
@@ -48,7 +47,7 @@
       "wheel"
     ];
   };
-  home-manager.users.roboticat = ../../home/home.nix;
+  home-manager.users.roboticat = ../../../home/home.nix;
 
   games.all = true;
   games.autoGEProton.directory = "/mnt/sda/games/Wine/compatibilitytools.d/";

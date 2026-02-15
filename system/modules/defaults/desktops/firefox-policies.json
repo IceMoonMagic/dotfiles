@@ -1,0 +1,50 @@
+{
+  "policies": {
+    "AutofillAddressEnabled": false,
+    "AutofillCreditCard": false,
+    "Homepage": "previous-session",
+    "PromptForDownloadLocation": true,
+    "SearchEngines": {
+      "Default": "DuckDuckGo"
+    },
+    "EnableTrackingProtection": {
+      "Category": "strict"
+    },
+    "SanitizeOnShutdown": {
+      "Cache": true,
+      "Cookies": true,
+      "FormData": true
+    },
+    "OfferToSaveLoginsDefault": false,
+    "Permissions": {
+      "Location": { "BlockNewRequests": true },
+      "Notifications": { "BlockNewRequests": true },
+      "Autoplay": { "Default": "block-audio-video" }
+    },
+    "PopupBlocking": {
+      "Default": true
+    },
+    "DisableTelemetry": true,
+    "HttpsOnlyMode": "enabled",
+    "ExtensionSettings": {
+      "addon@darkreader.org": {
+        "installation_mode": "normal_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/addon@darkreader.org/latest.xpi",
+        "private_browing": true
+      },
+      "uBlock0@raymondhill.net": {
+        "installation_mode": "normal_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/uBlock0@raymondhill.net/latest.xpi",
+        "private_browing": true
+      },
+      "{446900e4-71c2-419f-a6a7-df9c091e268b}": {
+        "installation_mode": "normal_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/{446900e4-71c2-419f-a6a7-df9c091e268b}/latest.xpi"
+      },
+      "sponsorBlocker@ajay.app": {
+        "installation_mode": "normal_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/sponsorBlocker@ajay.app/latest.xpi"
+      }
+    }
+  }
+}
