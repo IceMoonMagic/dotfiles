@@ -49,17 +49,53 @@
           nix.registry.nixpkgs = register nixpkgs;
           nix.registry.unstable = register inputs.nixpkgs-unstable;
         };
+      homeModules = [
+        inputs.plasma-manager.homeModules.plasma-manager
+        registry
+      ];
       mkHomeManager =
-        modules:
+        system: modules:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
         home-manager.lib.homeManagerConfiguration {
-          inherit modules;
-          specialArgs = { inherit inputs registry; };
+          inherit pkgs;
+          modules =
+            modules
+            ++ homeModules
+            ++ [
+              ./system/modules/defaults/nix.nix
+              overlays
+              {
+                nixpkgs.system = system;
+                nix.package = pkgs.nix;
+              }
+            ];
         };
       mkNixosSystem =
         modules:
         nixpkgs.lib.nixosSystem {
-          inherit modules;
-          specialArgs = { inherit inputs registry; };
+          modules = modules ++ [
+            inputs.disko.nixosModules.disko
+            inputs.home-manager.nixosModules.home-manager
+            inputs.nova-chatmix.nixosModules.nova-chatmix
+            registry
+            overlays
+            ./system/modules
+          ];
+          specialArgs = { inherit homeModules; };
+        };
+      mkNixosDesktop = modules: mkNixosSystem (modules ++ [ ./system/modules/defaults/desktops ]);
+      overlays =
+        { config, ... }:
+        {
+          nixpkgs.overlays = [
+            (_: _: {
+              inherit (inputs.sshd-rando.packages.${config.nixpkgs.hostPlatform.system})
+                sshd-rando
+                ;
+            })
+          ];
         };
     in
     {
@@ -71,25 +107,13 @@
       ] (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
 
       homeConfigurations = {
-        roboticat = mkHomeManager [ ./home/home.nix ];
+        roboticat = mkHomeManager "x86_64-linux" [ ./home/home.nix ];
       };
 
       nixosConfigurations = {
-        pseudo-aurora = mkNixosSystem [
-          ./system/hosts/pseudo-aurora/configuration.nix
-          ./system
-          ./system/modules/defaults/desktops
-        ];
-        icemoon-y370 = mkNixosSystem [
-          ./system/hosts/y370/configuration.nix
-          ./system
-          ./system/modules/defaults/desktops
-        ];
-        t54 = mkNixosSystem [
-          ./system/hosts/t54/configuration.nix
-          ./system
-          ./system/modules/defaults/desktops
-        ];
+        pseudo-aurora = mkNixosDesktop [ ./system/hosts/pseudo-aurora/configuration.nix ];
+        icemoon-y370 = mkNixosDesktop [ ./system/hosts/y370/configuration.nix ];
+        t54 = mkNixosDesktop [ ./system/hosts/t54/configuration.nix ];
       };
     };
 }

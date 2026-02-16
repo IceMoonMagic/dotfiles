@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  # imports = [ ./kde-plasma.nix ];
+  imports = [ ./kde-plasma.nix ];
 
   home.packages = with pkgs; [
     mission-center

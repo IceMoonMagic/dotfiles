@@ -93,7 +93,7 @@
         (mkConditionalList config.games.nintendo [
           dolphin-emu
           ryubing
-          inputs.sshd-rando.packages.${config.nixpkgs.hostPlatform.system}.sshd-rando
+          sshd-rando
         ])
       ];
     systemd.timers.ge-proton-update = lib.mkIf config.games.autoGEProton.enable {

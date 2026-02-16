@@ -1,7 +1,6 @@
 {
-  inputs,
+  homeModules,
   lib,
-  registry,
   ...
 }:
 {
@@ -9,9 +8,5 @@
   home-manager.backupFileExtension = lib.mkDefault "hm-bak";
   home-manager.useGlobalPkgs = lib.mkDefault true;
   home-manager.useUserPackages = lib.mkDefault true;
-  home-manager.extraSpecialArgs = lib.mkDefault [
-    inputs
-    registry
-  ];
-  # home-manager.sharedModules = [ homeModules ];
+  home-manager.sharedModules = homeModules;
 }
