@@ -86,17 +86,9 @@
           specialArgs = { inherit homeModules; };
         };
       mkNixosDesktop = modules: mkNixosSystem (modules ++ [ ./system/modules/defaults/desktops ]);
-      overlays =
-        { config, ... }:
-        {
-          nixpkgs.overlays = [
-            (_: _: {
-              inherit (inputs.sshd-rando.packages.${config.nixpkgs.hostPlatform.system})
-                sshd-rando
-                ;
-            })
-          ];
-        };
+      overlays = {
+        nixpkgs.overlays = [ inputs.sshd-rando.overlays.default ];
+      };
     in
     {
       formatter = nixpkgs.lib.genAttrs [

@@ -10,7 +10,7 @@
   };
 
   outputs =
-    { nixpkgs, ... }@inputs:
+    { self, nixpkgs, ... }@inputs:
     let
       forAllSystems = nixpkgs.lib.genAttrs [
         "x86_64-linux"
@@ -114,5 +114,11 @@
           };
         }
       );
+      overlays = rec {
+        default = sshd-rando;
+        sshd-rando = _: prev: {
+          inherit (self.packages.${prev.stdenv.hostPlatform.system}) sshd-rando;
+        };
+      };
     };
 }
