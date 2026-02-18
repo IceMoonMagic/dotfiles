@@ -27,6 +27,10 @@
       url = "path:./modules/sshd-rando";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    abiotic-factor = {
+      url = "path:./modules/abiotic-factor";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -79,6 +83,7 @@
             inputs.disko.nixosModules.disko
             inputs.home-manager.nixosModules.home-manager
             inputs.nova-chatmix.nixosModules.nova-chatmix
+            inputs.abiotic-factor.nixosModules.abiotic-server
             registry
             overlays
             ./system/modules
