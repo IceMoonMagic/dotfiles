@@ -196,7 +196,8 @@
                   wantedBy = [ "default.target" ];
                   # For some reason, doesn't seem to be recieving SIGINT?
                   # Has been timing out after 90 sec anyways, so...
-                  serviceConfig.TimeoutStopSec = 1;
+                  serviceConfig.TimeoutStopSec = 10;
+                  serviceConfig.KillMode = "mixed";
                   path = with pkgs; [
                     steamcmd
                     wine64

@@ -1,0 +1,42 @@
+Feb 19 01:49:43 pseudo-aurora systemd[1]: Started wine64-test.service.
+░░ Subject: A start job for unit wine64-test.service has finished successfully
+░░ Defined-By: systemd
+░░ Support: https://lists.freedesktop.org/mailman/listinfo/systemd-devel
+░░
+░░ A start job for unit wine64-test.service has finished successfully.
+░░
+░░ The job identifier is 29681.
+Feb 19 01:49:43 pseudo-aurora wine64[111317]: error: XDG_RUNTIME_DIR is invalid or not set in the environment.
+Feb 19 01:49:43 pseudo-aurora wine64[111317]: WARNING: radv is not a conformant Vulkan implementation, testing use only.
+Feb 19 01:49:45 pseudo-aurora wine64[111279]: Godot Engine v4.4.1.stable.official.49a5bc7b6 - https://godotengine.org
+Feb 19 01:49:45 pseudo-aurora wine64[111279]:
+Feb 19 01:49:55 pseudo-aurora systemd[1]: Stopping wine64-test.service...
+░░ Subject: A stop job for unit wine64-test.service has begun execution
+░░ Defined-By: systemd
+░░ Support: https://lists.freedesktop.org/mailman/listinfo/systemd-devel
+░░
+░░ A stop job for unit wine64-test.service has begun execution.
+░░
+░░ The job identifier is 29834.
+Feb 19 01:50:06 pseudo-aurora systemd[1]: wine64-test.service: State 'final-sigterm' timed out. Killing.
+Feb 19 01:50:06 pseudo-aurora systemd[1]: wine64-test.service: Killing process 111339 (winedevice.exe) with signal SIGKILL.
+Feb 19 01:50:06 pseudo-aurora systemd[1]: wine64-test.service: Failed with result 'timeout'.
+░░ Subject: Unit failed
+░░ Defined-By: systemd
+░░ Support: https://lists.freedesktop.org/mailman/listinfo/systemd-devel
+░░
+░░ The unit wine64-test.service has entered the 'failed' state with result 'timeout'.
+Feb 19 01:50:06 pseudo-aurora systemd[1]: Stopped wine64-test.service.
+░░ Subject: A stop job for unit wine64-test.service has finished
+░░ Defined-By: systemd
+░░ Support: https://lists.freedesktop.org/mailman/listinfo/systemd-devel
+░░
+░░ A stop job for unit wine64-test.service has finished.
+░░
+░░ The job identifier is 29834 and the job result is done.
+Feb 19 01:50:06 pseudo-aurora systemd[1]: wine64-test.service: Consumed 3.569s CPU time, 238.3M memory peak, 660K written to disk.
+░░ Subject: Resources consumed by unit runtime
+░░ Defined-By: systemd
+░░ Support: https://lists.freedesktop.org/mailman/listinfo/systemd-devel
+░░
+░░ The unit wine64-test.service completed and consumed the indicated resources.
