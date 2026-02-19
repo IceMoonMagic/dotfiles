@@ -27,6 +27,7 @@
           {
             config,
             lib,
+            options,
             pkgs,
             ...
           }:
@@ -45,6 +46,14 @@
                 example = "/opt/games/AbioticFactor/pfx";
               };
               autoUpdate = mkEnableOption "checking steam for updates before starting";
+              # See https://github.com/NixOS/nixpkgs/blob/nixos-unstable/nixos/modules/services/networking/ssh/sshd.nix
+              openFirewall = lib.mkOption {
+                type = lib.types.bool;
+                default = true;
+                description = ''
+                  Whether to automatically open the specified ports in the firewall.
+                '';
+              };
               # See https://github.com/DFJacob/AbioticFactorDedicatedServer/wiki/Technical-%E2%80%90-Launch-Parameters
               launchArgs =
                 let
@@ -172,11 +181,22 @@
                 cfg = config.services.abiotic-server;
               in
               {
+                networking.firewall.allowedUDPPorts =
+                  lib.optionals cfg.enable (
+                    lib.optionals cfg.openFirewall (options.services.abiotic-server.launchArgs.port.definitions)
+                  )
+                  ++ (lib.optionals (
+                    cfg.openFirewall
+                    && !isNull (lib.elemAt options.services.abiotic-server.launchArgs.queryPort.definitions 0)
+                  ) (options.services.abiotic-server.launchArgs.queryPort.definitions));
                 systemd.services.abiotic-server = lib.mkIf cfg.enable {
                   description = "Abiotic Factor server";
                   wants = [ "network-online.target" ];
                   after = [ "network-online.target" ];
                   wantedBy = [ "default.target" ];
+                  # For some reason, doesn't seem to be recieving SIGINT?
+                  # Has been timing out after 90 sec anyways, so...
+                  serviceConfig.TimeoutStopSec = 1;
                   path = with pkgs; [
                     steamcmd
                     wine64
@@ -187,22 +207,19 @@
                     GAME_DIR = cfg.gameDirectory;
                     AUTO_UPDATE = if cfg.autoUpdate then "" else "true";
                   };
-                  script =
-                    let
-                      launchArgs = with lib; (concatStringsSep " " (attrValues cfg.launchArgs));
-                    in
-                    ''
-                      # Install / update if configured to OR folder doesn't exist
-                      if [ $AUTO_UPDATE -o ! -d "$GAME_DIR" ]; then
-                        steamcmd +login anonymous \
-                        +@sSteamCmdForcePlatformType windows \
-                        +force_install_dir "$GAME_DIR" \
-                        +app_update 2857200 +quit
-                      fi
+                  script = ''
+                    # Install / update if configured to OR folder doesn't exist
+                    if [ $AUTO_UPDATE -o ! -d "$GAME_DIR" ]; then
+                      steamcmd \
+                      +@sSteamCmdForcePlatformType windows \
+                      +force_install_dir "$GAME_DIR" \
+                      +login anonymous \
+                      +app_update 2857200 +quit
+                    fi
 
-                      wine64 "$GAME_DIR/AbioticFactor/Binaries/Win64/AbioticFactorServer-Win64-Shipping.exe" \
-                      ${launchArgs}
-                    '';
+                    wine64 "$GAME_DIR/AbioticFactor/Binaries/Win64/AbioticFactorServer-Win64-Shipping.exe" \
+                    ${lib.concatStringsSep " " (lib.attrValues cfg.launchArgs)}
+                  '';
                 };
               };
           };

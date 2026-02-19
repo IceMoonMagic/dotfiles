@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, inputs, ... }:
 
 {
   imports = [
@@ -22,9 +22,58 @@
     ];
   };
   home-manager.users.roboticat = ../../../home/home.nix;
+  nix.settings.trusted-users = [ "roboticat" ];
 
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
+  };
+
+  services.sshd.enable = true;
+
+  networking.firewall.allowedUDPPorts = [ 7777 ];
+  # networking.nat.enable;
+  containers.abiotic-server = {
+    autoStart = true;
+    # privateNetwork = true;
+    # forwardPorts = [
+    #   {
+    #     hostPort = 53;
+    #     protocol = "udp";
+    #   }
+    #   {
+    #     hostPort = 7777;
+    #     protocol = "udp";
+    #   }
+    #   {
+    #     hostPort = 27015;
+    #     protocol = "udp";
+    #   }
+    # ];
+    ephemeral = true;
+    bindMounts = {
+      "/opt/Games/AbioticFactor" = {
+        hostPath = "/opt/Games/AbioticFactor";
+        isReadOnly = false;
+      };
+      "/root/Steam" = {
+        hostPath = "/opt/Games/AbioticFactor/.steam";
+      };
+    };
+    config =
+      { ... }:
+      {
+        imports = [
+          ../../modules/defaults/defaultContainer.nix
+          inputs.abiotic-factor.nixosModules.abiotic-server
+        ];
+        services.abiotic-server = {
+          enable = true;
+          gameDirectory = "/opt/Games/AbioticFactor";
+          launchArgs.serverPassword = "super secret password";
+        };
+        networking.useHostResolvConf = false;
+        services.resolved.enable = true;
+      };
   };
 }

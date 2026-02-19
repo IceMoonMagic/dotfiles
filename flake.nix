@@ -88,7 +88,7 @@
             overlays
             ./system/modules
           ];
-          specialArgs = { inherit homeModules; };
+          specialArgs = { inherit homeModules inputs; };
         };
       mkNixosDesktop = modules: mkNixosSystem (modules ++ [ ./system/modules/defaults/desktops ]);
       overlays = {
