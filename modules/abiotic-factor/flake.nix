@@ -194,10 +194,9 @@
                   wants = [ "network-online.target" ];
                   after = [ "network-online.target" ];
                   wantedBy = [ "default.target" ];
-                  # For some reason, doesn't seem to be recieving SIGINT?
-                  # Has been timing out after 90 sec anyways, so...
                   serviceConfig.TimeoutStopSec = 10;
                   serviceConfig.KillMode = "mixed";
+                  serviceConfig.SuccessExitStatus = [ 153 ];
                   path = with pkgs; [
                     steamcmd
                     wine64
@@ -218,7 +217,7 @@
                       +app_update 2857200 +quit
                     fi
 
-                    wine64 "$GAME_DIR/AbioticFactor/Binaries/Win64/AbioticFactorServer-Win64-Shipping.exe" \
+                    exec wine64 "$GAME_DIR/AbioticFactor/Binaries/Win64/AbioticFactorServer-Win64-Shipping.exe" \
                     ${lib.concatStringsSep " " (lib.attrValues cfg.launchArgs)}
                   '';
                 };
