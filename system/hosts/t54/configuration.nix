@@ -70,7 +70,8 @@
         services.abiotic-server = {
           enable = true;
           gameDirectory = "/opt/Games/AbioticFactor";
-          launchArgs.serverPassword = "super secret password";
+          launchArgs.serverPassword = "AK47";
+          launchArgs.worldSaveName = "Side7";
         };
         networking.useHostResolvConf = false;
         services.resolved.enable = true;
