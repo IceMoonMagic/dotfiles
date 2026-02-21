@@ -47,7 +47,17 @@
       "wheel"
     ];
   };
-  home-manager.users.roboticat = ../../../home/home.nix;
+  home-manager.users.roboticat = {
+    imports = [
+      ../../../home/base.nix
+      ../../../home/syncthing.nix
+      ../../../home/desktops
+      ../../../home/development/editors
+      ../../../home/games
+      ../../../home/accounts/icemoon.git.nix
+      ../../../home/accounts/roboticat.home.nix
+    ];
+  };
 
   games.all = true;
   games.autoGEProton.directory = "/mnt/sda/games/Wine/compatibilitytools.d/";

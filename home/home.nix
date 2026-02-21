@@ -1,29 +1,9 @@
 { pkgs, ... }:
 
 {
-  imports = [
-    ./base.nix
-    ./syncthing.nix
-    ./desktops
-    ./development/editors
-    ./games/mangohud.nix
-    ./games/minecraft.nix
-    ./games/vesktop.nix
-  ];
-
-  home.username = "roboticat";
-  home.homeDirectory = "/home/roboticat";
-
-  programs.git = {
-    enable = true;
-    settings.user.name = "IceMoonMagic";
-    settings.user.email = "icemoonmagic@gmail.com";
-    settings.init.defaultBranch = "main";
-  };
-
-  # Packages where configs aren't important (or not saved yet...)
+  # things to sort
   home.packages = with pkgs; [
-    obsidian
+    # obsidian
     # an office suite
 
     #sqlitebrowser

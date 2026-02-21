@@ -104,13 +104,18 @@
       ] (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
 
       homeConfigurations = {
-        roboticat = mkHomeManager "x86_64-linux" [ ./home/home.nix ];
+        roboticat = mkHomeManager "x86_64-linux" [
+          ./home/base.nix
+          ./home/development/editors
+          ./home/accounts/icemoon.git.nix
+          ./home/accounts/roboticat.home.nix
+        ];
       };
 
       nixosConfigurations = {
         pseudo-aurora = mkNixosDesktop [ ./system/hosts/pseudo-aurora/configuration.nix ];
         icemoon-y370 = mkNixosDesktop [ ./system/hosts/y370/configuration.nix ];
-        t54 = mkNixosDesktop [ ./system/hosts/t54/configuration.nix ];
+        t54 = mkNixosSystem [ ./system/hosts/t54/configuration.nix ];
       };
     };
 }

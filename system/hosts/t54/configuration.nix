@@ -21,7 +21,13 @@
       "wheel"
     ];
   };
-  home-manager.users.roboticat = ../../../home/home.nix;
+  home-manager.users.roboticat = {
+    imports = [
+      ../../../home/base.nix
+      ../../../home/accounts/icemoon.git.nix
+      ../../../home/accounts/roboticat.home.nix
+    ];
+  };
   nix.settings.trusted-users = [ "roboticat" ];
 
   hardware.graphics = {
