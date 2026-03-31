@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
@@ -13,10 +12,11 @@
     mods = lib.mkEnableOption "Mod Managers";
     minecraft = lib.mkEnableOption "Prism Launcher";
     nintendo = lib.mkEnableOption "Nintendo Stuff";
+    gacha = lib.mkEnableOption "Regrettable Decisions";
     autoGEProton = {
       enable = lib.mkEnableOption "Automatic Download of GE-Proton";
       directory = lib.mkOption {
-        description = "Directory ot save Proton to.";
+        description = "Directory to save Proton to.";
         type = lib.types.path;
       };
       frequency = lib.mkOption {
@@ -34,6 +34,7 @@
       mods = lib.mkDefault config.games.all;
       minecraft = lib.mkDefault config.games.all;
       nintendo = lib.mkDefault config.games.all;
+      gacha = lib.mkDefault config.games.all;
       autoGEProton.enable = lib.mkDefault config.games.main;
     };
 
@@ -48,7 +49,7 @@
       services.joycond.enable = true;
       services.joycond.package = pkgs.joycond.overrideAttrs (old: {
         # Without: I couldn't use the joycons' motion as non-root
-        # With: Cemuhook doesn't combine them, but motion is accessable
+        # With: Cemuhook doesn't combine them, but motion is accessible
         version = "2025-04-12";
         src = pkgs.fetchFromGitHub {
           owner = "DanielOgorchock";
@@ -95,7 +96,18 @@
           ryubing
           sshd-rando
         ])
+        (mkConditionalList config.games.gacha [
+          faugus-launcher
+        ])
       ];
+    networking.extraHosts = lib.mkIf config.games.gacha ''
+      # Gacha
+      0.0.0.0 data-p.gryphline.com
+      0.0.0.0 native-log-collect.gryphline.com
+      0.0.0.0 eventlog.gryphline.com
+      0.0.0.0 event-log-api-ipv6.gryphline.com
+      0.0.0.0 event-log-api-data-platform-data-lake-prod.gryphline.com
+    '';
     systemd.timers.ge-proton-update = lib.mkIf config.games.autoGEProton.enable {
       enable = config.games.autoGEProton.enable;
       description = "Automatically update GE-Proton";
@@ -113,7 +125,7 @@
       path = with pkgs; [
         curl
         gnutar
-        zstd
+        gzip
       ];
       environment.PROTON_DIR = config.games.autoGEProton.directory;
       script = ''
@@ -135,12 +147,12 @@
             exit 0;
         fi
 
-        echo ensuring existance of $dir
+        echo ensuring existence of $dir
         mkdir -p "$dir"
 
-        download_url=$(echo "$latestRelease" | grep --fixed-strings "$version.tar.zst" | tail -1 | cut -d\" -f4)
+        download_url=$(echo "$latestRelease" | grep --fixed-strings "$version.tar.gz" | tail -1 | cut -d\" -f4)
         echo downloading and extracting $download_url
-        tar --extract --zstd --directory "$dir" --group=users \
+        tar --extract --gzip --directory "$dir" --group=users \
             --file <(curl --location "$download_url" --output -)
 
         echo updating group and permissions
