@@ -18,18 +18,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
-    nova-chatmix = {
-      url = "github:icemoonmagic/nova-chatmix-linux/Rework";
-      # url = "path:/home/roboticat/Projects/nova-chatmix-linux";
+    extra-flakes = {
+      url = "path:./extra-flakes";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    sshd-rando = {
-      url = "path:./modules/sshd-rando";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    abiotic-factor = {
-      url = "path:./modules/abiotic-factor";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs-unstable.follows = "nixpkgs-unstable";
     };
   };
 
@@ -79,20 +71,21 @@
       mkNixosSystem =
         modules:
         nixpkgs.lib.nixosSystem {
-          modules = modules ++ [
-            inputs.disko.nixosModules.disko
-            inputs.home-manager.nixosModules.home-manager
-            inputs.nova-chatmix.nixosModules.nova-chatmix
-            inputs.abiotic-factor.nixosModules.abiotic-server
-            registry
-            overlays
-            ./system/modules
-          ];
+          modules =
+            modules
+            ++ [
+              inputs.disko.nixosModules.disko
+              inputs.home-manager.nixosModules.home-manager
+              registry
+              overlays
+              ./system/modules
+            ]
+            ++ (builtins.attrValues inputs.extra-flakes.nixosModules);
           specialArgs = { inherit homeModules inputs; };
         };
       mkNixosDesktop = modules: mkNixosSystem (modules ++ [ ./system/modules/defaults/desktops ]);
       overlays = {
-        nixpkgs.overlays = [ inputs.sshd-rando.overlays.default ];
+        nixpkgs.overlays = [ inputs.extra-flakes.overlays.default ];
       };
     in
     {

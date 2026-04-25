@@ -71,7 +71,7 @@
       {
         imports = [
           ../../modules/defaults/defaultContainer.nix
-          inputs.abiotic-factor.nixosModules.abiotic-server
+          inputs.extra-flakes.nixosModules.abiotic-server
         ];
         services.abiotic-server = {
           enable = true;
