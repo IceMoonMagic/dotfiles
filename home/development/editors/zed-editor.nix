@@ -9,10 +9,13 @@
       "git_firefly"
       "html"
       "nix"
+      "typos"
     ];
     extraPackages = with pkgs; [
       nil
       # nixd
+      package-version-server
+      typos-lsp
     ];
     userSettings = {
       autosave = "on_focus_change";

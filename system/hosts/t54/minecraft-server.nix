@@ -25,9 +25,9 @@ in
     wantedBy = [ "default.target" ];
   };
 
-  systemd.services.minecraft-server-maintance = {
+  systemd.services.minecraft-server-maintenance = {
     enable = true;
-    description = "Maintance operations for minecraft-server.service";
+    description = "Maintenance operations for minecraft-server.service";
     requires = [ "docker.service" ];
     after = [ "docker.service" ];
     conflicts = [ "minecraft-server.service" ];
@@ -49,9 +49,9 @@ in
     '';
   };
 
-  systemd.timers.minecraft-server-maintance = {
+  systemd.timers.minecraft-server-maintenance = {
     enable = true;
-    description = "Maintance operations for minecraft-server.service";
+    description = "Maintenance operations for minecraft-server.service";
     timerConfig = {
       OnCalendar = "Mon 16:00 UTC";
       Persistent = true;

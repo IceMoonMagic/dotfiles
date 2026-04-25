@@ -5,7 +5,7 @@
   xdg.configFile."ludusavi/config.yaml".source = ./ludusavi-config.yaml;
   systemd.user.services = {
     ludusavi-backup = {
-      Unit.Desciption = "Ludusavi backup";
+      Unit.Description = "Ludusavi backup";
       Service.ExecStart = "${pkgs.ludusavi}/bin/ludusavi backup --force";
     };
   };

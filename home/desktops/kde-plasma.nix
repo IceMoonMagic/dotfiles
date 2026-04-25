@@ -169,7 +169,7 @@
               "applications:org.pipewire.Helvum.desktop"
               "applications:steam.desktop"
               "applications:com.heroicgameslauncher.hgl.desktop"
-              #"applicatiosn:md.obsidian.Obsidian.deskop"
+              #"applications:md.obsidian.Obsidian.desktop"
             ];
           }
           "org.kde.plasma.marginsseparator"
