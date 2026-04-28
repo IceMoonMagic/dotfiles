@@ -26,75 +26,17 @@
   };
 
   outputs =
-    {
-      nixpkgs,
-      home-manager,
-      ...
-    }@inputs:
+    { ... }@inputs:
     let
-      registry =
-        let
-          register = path: {
-            to.type = "path";
-            to.path = path;
-          };
-        in
-        {
-          # Allow `nix {run,shell} {nixpkgs,unstable}#someProgram`
-          # to match this flake's nixpkgs nixpkgs / nixpkgs-unstable.
-          nix.registry.nixpkgs = register nixpkgs;
-          nix.registry.unstable = register inputs.nixpkgs-unstable;
-        };
-      homeModules = [
-        inputs.plasma-manager.homeModules.plasma-manager
-        registry
-      ];
-      mkHomeManager =
-        system: modules:
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-        in
-        home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules =
-            modules
-            ++ homeModules
-            ++ [
-              ./system/modules/defaults/nix.nix
-              overlays
-              {
-                nixpkgs.system = system;
-                nix.package = pkgs.nix;
-              }
-            ];
-        };
-      mkNixosSystem =
-        modules:
-        nixpkgs.lib.nixosSystem {
-          modules =
-            modules
-            ++ [
-              inputs.disko.nixosModules.disko
-              inputs.home-manager.nixosModules.home-manager
-              registry
-              overlays
-              ./system/modules
-            ]
-            ++ (builtins.attrValues inputs.extra-flakes.nixosModules);
-          specialArgs = { inherit homeModules inputs; };
-        };
-      mkNixosDesktop = modules: mkNixosSystem (modules ++ [ ./system/modules/defaults/desktops ]);
-      overlays = {
-        nixpkgs.overlays = [ inputs.extra-flakes.overlays.default ];
-      };
+      inherit (import ./helpers.nix inputs) mkHomeManager mkNixosSystem mkNixosDesktop;
     in
     {
-      formatter = nixpkgs.lib.genAttrs [
+      formatter = inputs.nixpkgs.lib.genAttrs [
         "x86_64-linux"
         # "aarch64-linux"
         # "x86_64-darwin"
         # "aarch64-darwin"
-      ] (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
+      ] (system: inputs.nixpkgs.legacyPackages.${system}.nixfmt-tree);
 
       homeConfigurations = {
         roboticat = mkHomeManager "x86_64-linux" [
