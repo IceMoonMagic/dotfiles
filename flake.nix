@@ -2,7 +2,6 @@
   description = "NixOS Config";
 
   inputs = {
-    self.submodules = true;
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     disko = {
