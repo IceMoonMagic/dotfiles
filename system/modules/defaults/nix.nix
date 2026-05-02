@@ -13,6 +13,7 @@
       automatic = lib.mkDefault true;
       dates = lib.mkDefault "weekly";
       persistent = lib.mkDefault true;
+      options = "--delete-older-than 7d";
     };
   };
 

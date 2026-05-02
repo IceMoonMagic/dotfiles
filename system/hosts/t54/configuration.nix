@@ -8,6 +8,16 @@
   ];
 
   networking.hostName = "t54";
+  system.autoUpgrade = {
+    allowReboot = true;
+    viaGit.updateInputs = [
+      "nixpkgs"
+      "nixpkgs-unstable"
+      "home-manager"
+      "disko"
+      "extra-flakes/abiotic-factor"
+    ];
+  };
 
   virtualisation.docker.enable = true;
   virtualisation.docker.storageDriver = "btrfs";
