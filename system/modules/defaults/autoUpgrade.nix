@@ -65,7 +65,7 @@
               nixpkgs-nar = lock.nodes.nixpkgs.locked.narHash;
             in
             (pkgs.writeShellScript "upgrade-nixos-config" ''
-              set -euo pipefail
+              set -uo pipefail
 
               nixpkgsNar=$(nix flake metadata ${nixpkgs-url} --json | jq .locked.narHash)
               nixpkgsUpdated=$([ $nixpkgsNar != ${nixpkgs-nar} ]; echo $?)
@@ -82,19 +82,17 @@
                   # If /etc/nixos exists and is correct repo
                   git clone --shared --revision=origin/main /etc/nixos /tmp/nixos || exit 255
                   git -C /tmp/nixos remote set-url origin ${cfg.gitUrl} || exit 255
+                  git -C /tmp/nixos pull origin main:main || exit 255
                   git -C /tmp/nixos switch main || exit 255
-                  git -C /tmp/nixos pull origin || exit 255
               else
                   # Exists and is the wrong repo
                   git clone --filter="blob:none" --single-branch "${cfg.gitUrl}" /tmp/nixos || exit 255
               fi
 
-              flakeUpdated=$(
               git -C /tmp/nixos ls-files | \
-              xargs -I {} diff -q {} /run/current-system/system-flake/{} | \
+              xargs -I {} diff -q /tmp/nixos/{} /run/current-system/system-flake/{} | \
               grep -v flake.lock;
-              echo $?
-              )
+              flakeUpdated=$?
 
               if [ $nixpkgsUpdated -eq 1 -a $flakeUpdated -eq 1 ]; then
                 exit 1
