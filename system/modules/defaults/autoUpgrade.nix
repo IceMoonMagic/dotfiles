@@ -46,7 +46,10 @@
       systemd.services."nixos-upgrade" = lib.mkIf cfg.enable {
         path = [
           pkgs.curl
+          pkgs.diffutils
+          pkgs.findutils
           pkgs.gitMinimal
+          pkgs.gnugrep
           pkgs.jq
         ];
         serviceConfig = {
@@ -73,12 +76,14 @@
               fi
 
               if [ -d /etc/nixos ] \
-              && origin=$(git -C /etc/nixos remote get-url origin) \
-              && [ "$origin" = "${cfg.gitUrl}" ]
+                && origin=$(git -C /etc/nixos remote get-url origin) \
+                && [ "$origin" = "${cfg.gitUrl}" ]
               then
                   # If /etc/nixos exists and is correct repo
-                  git -C /etc/nixos fetch origin main || true  # Ignore fail
                   git clone --shared --revision=origin/main /etc/nixos /tmp/nixos || exit 255
+                  git -C /tmp/nixos remote set-url origin ${cfg.gitUrl} || exit 255
+                  git -C /tmp/nixos switch main || exit 255
+                  git -C /tmp/nixos pull origin || exit 255
               else
                   # Exists and is the wrong repo
                   git clone --filter="blob:none" --single-branch "${cfg.gitUrl}" /tmp/nixos || exit 255
