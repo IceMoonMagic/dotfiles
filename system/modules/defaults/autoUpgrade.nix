@@ -1,7 +1,8 @@
 {
   config,
-  pkgs,
+  inputs,
   lib,
+  pkgs,
   ...
 }:
 {
@@ -43,16 +44,32 @@
       # Following is loosely derived from nixpkgs/issues/349734#issuecomment-4333993657
       system.autoUpgrade.flake = lib.mkIf cfg.enable (lib.mkForce "/tmp/nixos");
       systemd.services."nixos-upgrade" = lib.mkIf cfg.enable {
-        path = [ pkgs.gitMinimal ];
+        path = [
+          pkgs.curl
+          pkgs.gitMinimal
+          pkgs.jq
+        ];
         serviceConfig = {
           PrivateTmp = "yes";
-          ExecStartPre = (
-            pkgs.writeShellScript "upgrade-nixos-config" ''
+          ExecCondition =
+            let
+              lock = builtins.fromJSON (builtins.readFile (inputs.system-flake + "/flake.lock"));
+              nixpkgs-url =
+                let
+                  orig = lock.nodes.nixpkgs.original;
+                in
+                orig.type + ":" + orig.owner + "/" + orig.repo + "/" + orig.ref;
+              nixpkgs-nar = lock.nodes.nixpkgs.locked.narHash;
+            in
+            (pkgs.writeShellScript "upgrade-nixos-config" ''
               set -euo pipefail
+
+              nixpkgsNar=$(nix flake metadata ${nixpkgs-url} --json | jq .locked.narHash)
+              nixpkgsUpdated=$([ $nixpkgsNar != ${nixpkgs-nar} ]; echo $?)
 
               if [ ! -d /etc/nixos ]; then
                   # Clone if /etc/nixos doesn't exist
-                  git clone --filter="blob:none" "${cfg.gitUrl}"
+                  git clone --filter="blob:none" "${cfg.gitUrl}" /etc/nixos || exit 255
               fi
 
               if [ -d /etc/nixos ] \
@@ -60,15 +77,26 @@
               && [ "$origin" = "${cfg.gitUrl}" ]
               then
                   # If /etc/nixos exists and is correct repo
-                  git fetch origin main:main || true  # Ignore fail
-                  git clone --shared --revision=origin/main /etc/nixos /tmp/nixos
+                  git -C /etc/nixos fetch origin main || true  # Ignore fail
+                  git clone --shared --revision=origin/main /etc/nixos /tmp/nixos || exit 255
               else
                   # Exists and is the wrong repo
-                  git clone --filter="blob:none" --single-branch "${cfg.gitUrl}" /tmp/nixos
+                  git clone --filter="blob:none" --single-branch "${cfg.gitUrl}" /tmp/nixos || exit 255
               fi
-              nix flake update ${updateInputs} --flake /tmp/nixos
-            ''
-          );
+
+              flakeUpdated=$(
+              git -C /tmp/nixos ls-files | \
+              xargs -I {} diff -q {} /run/current-system/system-flake/{} | \
+              grep -v flake.lock;
+              echo $?
+              )
+
+              if [ $nixpkgsUpdated -eq 1 -a $flakeUpdated -eq 1 ]; then
+                exit 1
+              fi
+
+              nix flake update ${updateInputs} --flake /tmp/nixos || exit 255
+            '');
         };
       };
     };
