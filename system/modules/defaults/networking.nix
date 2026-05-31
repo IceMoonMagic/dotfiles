@@ -1,6 +1,7 @@
 { lib, ... }:
 {
   networking.networkmanager.enable = lib.mkDefault true;
+  networking.networkmanager.dns = "none";
   networking.nameservers = [
     # Quad9
     "9.9.9.9"
@@ -9,7 +10,5 @@
     "1.1.1.1"
     "1.0.0.1"
   ];
-  # networking.resolvconf.enable = false;
-  networking.dhcpcd.enable = false;
   #   services.netbird.enable = true;
 }
