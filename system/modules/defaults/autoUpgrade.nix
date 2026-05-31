@@ -67,7 +67,7 @@
             (pkgs.writeShellScript "upgrade-nixos-config" ''
               set -uo pipefail
 
-              nixpkgsNar=$(nix flake metadata ${nixpkgs-url} --json | jq .locked.narHash)
+              nixpkgsNar=$(nix flake metadata ${nixpkgs-url} --json | jq --raw-output .locked.narHash)
               nixpkgsUpdated=$([ $nixpkgsNar != ${nixpkgs-nar} ]; echo $?)
 
               if [ ! -d /etc/nixos ]; then
