@@ -7,7 +7,7 @@
     fastfetch
     tree
     rmlint
-    nixfmt-rfc-style
+    nixfmt
     p7zip
     unrar
     #     unrar-free

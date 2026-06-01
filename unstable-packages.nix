@@ -5,6 +5,6 @@ let
 in
 {
   inherit (pkgs)
-    faugus-launcher # Adds sleep blocking; Frequent updates
+    faugus-launcher # Frequent updates
     ;
 }

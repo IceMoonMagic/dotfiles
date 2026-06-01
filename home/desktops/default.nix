@@ -5,7 +5,7 @@
 
   home.packages = with pkgs; [
     mission-center
-    helvum
+    crosspipe
   ];
 
   xdg.dataFile."user-places.xbel".source = pkgs.substitute {

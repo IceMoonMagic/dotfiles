@@ -166,7 +166,7 @@
               "preferred://browser"
               "preferred://terminal"
               "applications:vesktop.desktop"
-              "applications:org.pipewire.Helvum.desktop"
+              "applications:io.github.dp0sk.Crosspipe.desktop"
               "applications:steam.desktop"
               "applications:com.heroicgameslauncher.hgl.desktop"
               #"applications:md.obsidian.Obsidian.desktop"
