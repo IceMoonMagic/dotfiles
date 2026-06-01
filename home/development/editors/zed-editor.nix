@@ -6,41 +6,73 @@
 }:
 
 {
+  home.shellAliases = lib.optionalAttrs config.programs.zed-editor.enable {
+    zed = "zeditor --new";
+    zeditor = "zeditor --new";
+  };
   programs.zed-editor = {
-    enable = true;
+    enable = lib.mkDefault true;
     extensions = [
-      "codebook"
+      # Themes & Icons
+      "godot-theme"
+      "material-icon-theme"
+      # Languages & Grammars
+      "asciidoc"
       "dockerfile"
-      "git_firefly"
+      "gdscript" # LSP from godot editor
       "html"
       "nix"
+      # Etc
       "typos"
     ];
     extraPackages = with pkgs; [
       nil
-      # nixd
       package-version-server
       typos-lsp
     ];
     userSettings = {
+      # Behavior
       autosave = "on_focus_change";
+      cli_default_open_behavior = "new_window"; # Kinda broken (github:zed-industries/zed#53528)
+      completions.lsp_insert_mode = "insert";
       disable_ai = true;
-      buffer_font_size = 16;
-      buffer_font_family = "Noto Sans Mono";
+      document_folding_ranges = "on";
       drag_and_drop_selection.delay = 0;
-      terminal.cursor_shape = "bar";
-      terminal.font_family = "NotoSansM Nerd Font";
+      extend_comment_on_newline = false;
+      restore_on_startup = "empty_tab";
+      # Layout
       collaboration_panel.button = false;
       search.button = false;
       title_bar.show_sign_in = false;
-      languages.nix.language_servers = [
+      # Themes
+      theme = "Godot";
+      icon_theme = "Material Icon Theme";
+      # Buffer & Terminal
+      buffer_font_family = "Noto Sans Mono";
+      buffer_font_size = 16;
+      terminal.button = false; # Use keybind for center term instead
+      terminal.cursor_shape = "bar";
+      terminal.font_family = "NotoSansM Nerd Font";
+      wrap_guides = [
+        80
+        120
+      ];
+      # Languages
+      languages.Nix.language_servers = [
         "nil"
-        # "nixd"
+        "typos"
       ];
     };
     userKeymaps = [
       {
+        bindings.ctrl-shift-t = "workspace::NewCenterTerminal";
+      }
+      {
         context = "Terminal";
+        bindings.ctrl-q = [
+          "terminal::SendKeystroke"
+          "ctrl-q"
+        ];
         bindings.ctrl-s = [
           "terminal::SendKeystroke"
           "ctrl-s"
