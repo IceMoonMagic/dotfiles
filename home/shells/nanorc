@@ -1,0 +1,15 @@
+set afterends
+set autoindent
+set colonparsing
+# set functioncolor [bold,][italic,]fgcolor,bgcolor
+set guidestripe 80
+set linenumbers
+# set minibar
+set mouse
+set smarthome
+# set speller typos # doesn't really work...
+set tabsize 4
+set tabstospaces
+# set zap
+
+bind ^H chopwordleft main

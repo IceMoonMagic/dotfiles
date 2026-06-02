@@ -15,4 +15,5 @@
       preInstall = "find -not -name NotoSansMNerdFont-Regular.ttf -delete";
     })
   ];
+  programs.nano.nanorc = builtins.readFile ../../../home/shells/nanorc;
 }

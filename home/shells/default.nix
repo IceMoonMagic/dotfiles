@@ -44,4 +44,6 @@
     cp = "cp --archive --interactive --reflink=auto";
     df = "df --human-readable";
   };
+
+  xdg.configFile."nano/nanorc".source = ./nanorc;
 }
