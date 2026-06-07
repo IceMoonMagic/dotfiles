@@ -2,9 +2,12 @@
 {
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
+    bat
+    bottom
     cloc
     compsize
     fastfetch
+    fd
     tree
     rmlint
     nixfmt

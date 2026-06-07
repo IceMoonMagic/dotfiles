@@ -1,5 +1,9 @@
-{ lib, ... }:
+{ config, lib, ... }:
 {
+  programs.thunderbird.enable = true;
+  programs.thunderbird.policies = builtins.removeAttrs config.programs.firefox.policies [
+    "ExtensionSettings"
+  ];
   # Install firefox.
   programs.firefox.enable = lib.mkDefault true;
   # programs.firefox.policies = ./firefox-policies.json;
