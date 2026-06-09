@@ -23,25 +23,30 @@ with lib;
     };
   };
   config = {
-    environment.etc."containers/systemd/home-assistant.container".text = mkIf cfg.enable ''
-      [Unit]
-      Description=Open source home automation that puts local control and privacy first
-      Requires=network.target
-      After=network.target
+    environment.etc = optionalAttrs cfg.enable {
+      "containers/systemd/home-assistant.container".text = ''
+        [Unit]
+        Description=Open source home automation that puts local control and privacy first
+        Requires=network.target
+        After=network.target
 
-      [Container]
-      ContainerName=homeassistant
-      Image=ghcr.io/home-assistant/home-assistant:stable
-      Pull=newer
-      Network=host
-      Volume=${cfg.configDir}:/config
-      Volume=/etc/localtime:/etc/localtime:ro
-      Volume=/run/dbus:/run/dbus:ro
+        [Container]
+        ContainerName=home-assistant
+        Image=ghcr.io/home-assistant/home-assistant:stable
+        Pull=newer
+        Network=host
+        Volume=${cfg.configDir}:/config
+        Volume=/etc/localtime:/etc/localtime:ro
+        Volume=/run/dbus:/run/dbus:ro
 
-      [Service]
-      Slice=quadlets.slice
-      Restart=always
-    '';
+        [Service]
+        Slice=quadlets.slice
+        Restart=always
+
+        [Install]
+        WantedBy=quadlets.target
+      '';
+    };
     networking.firewall.allowedTCPPorts = lib.optional (cfg.enable && cfg.openFirewall) 8123;
   };
 }
