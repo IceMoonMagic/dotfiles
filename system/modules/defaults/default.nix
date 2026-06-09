@@ -3,11 +3,12 @@
   imports = [
     ./nix.nix
     ./autoUpgrade.nix
-    ./locale.nix
     ./boot.nix
+    ./home-manager.nix
+    ./kmscon.nix
+    ./locale.nix
     ./networking.nix
     ./packages.nix
-    ./home-manager.nix
     ./terminal.nix
   ];
 
