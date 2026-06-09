@@ -54,6 +54,7 @@
         pseudo-aurora = mkNixosDesktop [ ./system/hosts/pseudo-aurora/configuration.nix ];
         icemoon-y370 = mkNixosDesktop [ ./system/hosts/y370/configuration.nix ];
         t54 = mkNixosSystem [ ./system/hosts/t54/configuration.nix ];
+        x201e = mkNixosSystem [ ./system/hosts/x201e/configuration.nix ];
       };
     };
 }
