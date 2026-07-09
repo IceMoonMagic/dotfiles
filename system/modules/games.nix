@@ -42,7 +42,6 @@
       enable = config.games.main;
       package = pkgs.steam.override {
         extraEnv.MANGOHUD = true;
-        extraEnv.PROTON_ENABLE_WAYLAND = 1;
       };
     };
     /*
@@ -159,12 +158,10 @@
         chgrp users "$dir/$version" --recursive
         chmod g=u "$dir/$version" --recursive
 
-        echo updating GE-Proton-latest symlink
-        ln --force --symbolic --relative --no-dereference \
-            "$dir/$version" "$dir/GE-Proton-latest"
-        # Alternatively, update Steam's config
-        # File: ~/.local/share/Steam/config/config.vdf
-        # Find: "0"\n\s*?{\n\s*?"name"\s*?"(GE-Proton\d+?-\d+?)"
+        echo replacing GE-Proton-Latest
+        rm --recursive --force "$dir/GE-Proton-Latest" || true
+        cp --archive --reflink=auto "$dir/$version" "$dir/GE-Proton-Latest"
+        sed -i "s/$version/GE-Proton-Latest/g" "$dir/GE-Proton-Latest/compatibilitytool.vdf"
 
         # Remove all but N newest versions of GE-Proton
         toRemove=$(
