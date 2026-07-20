@@ -43,6 +43,7 @@
       package = pkgs.steam.override {
         extraEnv.MANGOHUD = true;
       };
+      extest.enable = true;
     };
     /*
       services.joycond.enable = true;
@@ -94,9 +95,6 @@
           dolphin-emu
           ryubing
           sshd-rando
-        ])
-        (mkConditionalList config.games.gacha [
-          faugus-launcher
         ])
       ];
     networking.extraHosts = lib.mkIf config.games.gacha ''

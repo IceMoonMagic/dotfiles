@@ -60,6 +60,7 @@
   };
 
   games.all = true;
+  games.nintendo = false;
   games.autoGEProton.directory = "/mnt/sda/games/Wine/compatibilitytools.d/";
   headsets.enable = true;
   headsets.chatmix = true;
