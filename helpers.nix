@@ -3,7 +3,7 @@ let
   overlays = {
     nixpkgs.overlays = [
       inputs.extra-flakes.overlays.default
-      (import ./unstable-packages.nix inputs.nixpkgs-unstable)
+      (import ./unstable-packages.nix inputs.nixpkgs inputs.nixpkgs-unstable)
     ];
   };
   registry =
