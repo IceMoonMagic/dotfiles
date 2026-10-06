@@ -52,11 +52,12 @@
         dir="$PROTON_DIR"
         echo proton directory: $dir
         githubReleaseUrl="https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest"
+        suffix="-x86_64"
 
         echo fetching latest release info
         latestRelease=$(curl --silent $githubReleaseUrl)
-        version=$(echo "$latestRelease" | grep tag_name | cut -d\" -f4)
-        echo latest Version: $version
+        version=$(echo "$latestRelease" | grep tag_name | cut -d\" -f4)$suffix
+        echo Latest Version: $version
 
         echo checking if already installed
         # Skip if latest is already installed
