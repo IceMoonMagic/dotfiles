@@ -28,9 +28,7 @@
   system.autoUpgrade.allowReboot = true;
 
   services.sshd.enable = true;
-  # services.opencloud.enable = true;
 
-  # ToDo: OpenCloud + Radicale
   virtualisation.quadlets = {
     discord-bot.enable = true;
     home-assistant.enable = true;

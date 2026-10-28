@@ -11,7 +11,4 @@
 
   # Doesn't have a headless mode (github:localsend/localsend#11)
   programs.localsend.enable = true;
-  environment.systemPackages = with pkgs; [
-    opencloud-desktop
-  ];
 }
