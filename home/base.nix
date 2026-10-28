@@ -39,6 +39,7 @@
   imports = [
     ./shells
     ./development/languages
+    ./syncthing.nix
   ];
 
   programs.gh.enable = true;

@@ -25,7 +25,6 @@
   home-manager.users.roboticat = {
     imports = [
       ../../../home/base.nix
-      ../../../home/syncthing.nix
       ../../../home/desktops
       ../../../home/development/editors
       ../../../home/games
