@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, pkgs, ... }:
 
 {
   imports = [
@@ -7,6 +7,13 @@
   ];
 
   networking.hostName = "icemoon-y370";
+  system.autoUpgrade.enable = false;
+  system.autoUpgrade.viaGit.enable = lib.mkForce false;
+  environment.systemPackages = with pkgs; [
+    gimp
+    inkscape
+    krita
+  ];
 
   users.users.roboticat = {
     isNormalUser = true;
